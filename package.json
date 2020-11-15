@@ -1,0 +1,25 @@
+{
+  "name": "it-trainer-tg-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frolovsky/ITtrainerBot.git"
+  },
+  "author": "Alexey Frolovsky",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frolovsky/ITtrainerBot/issues"
+  },
+  "homepage": "https://github.com/frolovsky/ITtrainerBot#readme",
+  "dependencies": {
+    "dotenv": "8.2.0",
+    "mongoose": "^5.10.13",
+    "node-telegram-bot-api": "^0.50.0",
+    "nodemon": "^2.0.6"
+  }
+}
