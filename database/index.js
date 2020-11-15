@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const { MONGO_CONNECTION_STRING } = require('../common/config')
+const { MONGO_CONNECTION_STRING } = require('../common/config');
+const { getUser } = require('./functions')
 
 const init = () => {
   mongoose.connect(MONGO_CONNECTION_STRING, {
@@ -16,5 +17,6 @@ const init = () => {
 }
 
 module.exports = {
-  init
+  init,
+  getUser
 }

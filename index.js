@@ -7,16 +7,25 @@ const bot = new TelegramBot(API_TOKEN, {
   polling: true
 });
 
-bot.on('text', (message, meta) => {
+let user = null;
+
+bot.on('text', message => {
   const chatId = message.chat.id;
   const text = message.text;
-
+  if (!user || user === null) {
+    const data = {
+      chatId,
+      firstName: message.from.first_name,
+      username: message.from.username
+    }
+    user = db.getUser(data)
+  }
   if (text.startsWith('/')) {
     command.commandHandler(bot, chatId, text)
   }
 });
 
-bot.on('callback_query', (callbackQuery) => {
+bot.on('callback_query', callbackQuery => {
   const { data, message } = callbackQuery;
   const options = {
     chatId: message.chat.id,

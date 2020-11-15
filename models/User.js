@@ -10,7 +10,13 @@ const userSchema = new Schema({
   username: String,
   name: String,
   lastActivitiy: Date,
-  lastTheme: String
+  lastTheme: String,
+  scores: {
+    javascript: Number,
+    python: Number,
+    markup: Number,
+  },
+  totalScore: Number
 }, { versionKey: false });
 
 const User = mongoose.model('User', userSchema)
