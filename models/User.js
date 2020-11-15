@@ -1,12 +1,17 @@
-const mongoose, { Schema } = require('mongoose');
+const mongoose = require('mongoose');
+const Schema = require('mongoose').Schema;
 
 const userSchema = new Schema({
-  id: String,
-  date_start: {
+  _id: String,
+  created: {
     type: Date,
-    default: Date.now
-  }
-});
+    default: Date.now()
+  },
+  username: String,
+  name: String,
+  lastActivitiy: Date,
+  lastTheme: String
+}, { versionKey: false });
 
 const User = mongoose.model('User', userSchema)
 

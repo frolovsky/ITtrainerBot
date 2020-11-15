@@ -19,7 +19,7 @@
   "dependencies": {
     "dotenv": "8.2.0",
     "mongoose": "^5.10.13",
-    "nodemon": "^2.0.6",
-    "telegraf": "3.38.0"
+    "node-telegram-bot-api": "^0.50.0",
+    "nodemon": "^2.0.6"
   }
 }
