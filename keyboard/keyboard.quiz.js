@@ -8,7 +8,7 @@ module.exports = (quiz) => {
         },
         {
           text: 'Back',
-          callback_data: `report-quiz-${quiz}`
+          callback_data: 'start-test'
         },
       ],
     ]
