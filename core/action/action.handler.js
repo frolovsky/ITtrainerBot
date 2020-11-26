@@ -1,6 +1,13 @@
 const { quizKeyboard, themesKeyboard } = require('../../keyboard');
+const User = require('../../models/User'); 
+const { getBuilderQuiz } = require('../../database/functions');
+const { JSQuiz, MarkupQuiz, PythonQuiz, BuilderQuiz } = require('../../models/Quiz');
 
-module.exports = (bot, data, options) => {
+let createdQuestion = {
+  theme: null
+};
+
+module.exports = async (bot, data, options) => {
   switch(true) {
     case (/^start-test$/).test(data):
       bot.sendMessage(options.chatId, 'Выбери язык программирования и приступай к выполнению тестов! После каждого ответа мы будем посылать тебе новый вопрос, отключить эту функцию ты можешь в настройках\n<code>/settings - Открыть настройки</code>', {
@@ -35,6 +42,15 @@ module.exports = (bot, data, options) => {
     case (/^report-quiz-\d+$/).test(data): 
       console.log(`report quiz: ${data}`)
       break;
+
+    case (/^create-quiz$/).test(data): 
+      let quiz = await getBuilderQuiz();
+      if (!quiz.programLang) {
+        await bot.sendMessage(options.chatId, 'Язык программирования');
+      }
+      
+      break;
+
     default:
       bot.sendMessage(options.chatId, 'Unknown command.');
       console.log('unknown command')

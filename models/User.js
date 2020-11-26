@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = require('mongoose').Schema;
 
 const userSchema = new Schema({
-  _id: String,
+  _id: Number,
   created: {
     type: Date,
     default: Date.now()
@@ -16,7 +16,11 @@ const userSchema = new Schema({
     python: Number,
     markup: Number,
   },
-  totalScore: Number
+  totalScore: Number,
+  isAdmin: {
+    type: Boolean,
+    default: false
+  }
 }, { versionKey: false });
 
 const User = mongoose.model('User', userSchema)
