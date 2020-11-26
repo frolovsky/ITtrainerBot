@@ -1,6 +1,6 @@
 const { API_TOKEN } = require('./common/config');
 const TelegramBot = require('node-telegram-bot-api');
-const { action, command } = require('./core');
+const { action, router } = require('./core');
 const db = require('./database');
 
 const bot = new TelegramBot(API_TOKEN, {
@@ -9,7 +9,7 @@ const bot = new TelegramBot(API_TOKEN, {
 
 let user = null;
 
-bot.on('text', message => {
+bot.on('text', async message => {
   const chatId = message.chat.id;
   const text = message.text;
   if (!user || user === null) {
@@ -21,7 +21,7 @@ bot.on('text', message => {
     user = db.getUser(data)
   }
   if (text.startsWith('/')) {
-    command.commandHandler(bot, chatId, text)
+    router(bot, chatId, text, message.message_id)
   }
 });
 

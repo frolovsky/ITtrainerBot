@@ -3,19 +3,19 @@ module.exports = {
     [
       {
         text: 'JavaScript',
-        callback_data: 'javascript-study'
+        callback_data: 'create-javascript-quiz'
       },
     ],
     [
       {
-        text: 'Python',
-        callback_data: 'python-study'
+        text: 'Pyton',
+        callback_data: 'create-python-quiz'
       },
     ],
     [
       {
         text: 'HTML and CSS',
-        callback_data: 'markup-study'
+        callback_data: 'create-markup-quiz'
       },
     ],
   ]
