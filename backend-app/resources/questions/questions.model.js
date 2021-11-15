@@ -10,7 +10,11 @@ const QuestionSchema = new mongoose.Schema({
   options: [String],
   correctOption: Number,
   reward: Number,
-  materials: String
+  materials: String,
+  images: [{
+    data: Buffer,
+    contentType: String,
+  }],
 });
 
 const QuestionRU = new mongoose.model('question', QuestionSchema, 'questions-ru');

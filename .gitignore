@@ -137,3 +137,6 @@ backend-app/yarn-debug.log*
 backend-app/yarn-error.log*
 backend-app/pnpm-debug.log*
 
+# BACKEND uploads files
+backend-app/uploads/*
+
