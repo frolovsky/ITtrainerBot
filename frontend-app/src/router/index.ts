@@ -6,9 +6,21 @@ Vue.use(VueRouter);
 const routes: Array<RouteConfig> = [
   {
     path: "/",
-    name: "Home",
-    component: () => import(/* webpackChunkName: "Home" */ "../views/Home.vue"),
+    name: "dashboard",
+    component: () => import(/* webpackChunkName: "dashboard" */ "../views/dashboard.vue"),
   },
+  {
+    path: "/questions",
+    name: "questions",
+    component: () => import(/* webpackChunkName: "questions" */ "../views/questions.vue"),
+    children: [
+      {
+        path: "add",
+        name: "add-question",
+        component: () => import(/* webpackChunkName: "add-question" */ "../views/add-question.vue"),
+      }
+    ]
+  }
 ];
 
 const router = new VueRouter({
