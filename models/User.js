@@ -91,10 +91,6 @@ const userSchema = new Schema({
       }
     },
   },
-  isAdmin: {
-    type: Boolean,
-    default: false
-  },
   settings: {
     notify: {
       type: String,

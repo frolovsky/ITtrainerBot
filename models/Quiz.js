@@ -20,16 +20,6 @@ const quizSchema = new Schema({
   reward: Number,
 });
 
-const quizBuilderSchema = new Schema({
-  question: String,
-  options: [String],
-  correctOption: Number,
-  programLang: String,
-  themes: [String],
-  explanation: [String],
-  reward: Number,
-});
-
 const answerSchema = new Schema({
   date: {
     type: Date,
@@ -50,10 +40,8 @@ const answerSchema = new Schema({
 const JSQuiz = mongoose.model('javascript-quiz', quizSchema);
 const PythonQuiz = mongoose.model('python-quiz', quizSchema);
 const MarkupQuiz = mongoose.model('markup-quiz', quizSchema);
-const BuilderQuiz = mongoose.model('builder-quiz', quizBuilderSchema);
 
 module.exports = {
-  BuilderQuiz,
   JSQuiz,
   PythonQuiz,
   MarkupQuiz

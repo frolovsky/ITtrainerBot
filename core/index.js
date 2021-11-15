@@ -1,4 +1,4 @@
 const action = require('./action');
-const { router, getQuizBuilder } = require('./commands');
+const { router } = require('./commands');
 
-module.exports = { action, router, getQuizBuilder }
+module.exports = { action, router }

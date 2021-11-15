@@ -1,3 +1,3 @@
-const { router, getQuizBuilder } = require('./commands.handler');
+const { router } = require('./commands.handler');
 
-module.exports = { router, getQuizBuilder };
+module.exports = { router };

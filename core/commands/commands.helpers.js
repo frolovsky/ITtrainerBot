@@ -1,28 +1,5 @@
 // const commands = require('./commands.handler');
 
-// const createEmptyQuizBuilder = () => {
-//   return {
-//     question: null,
-//     options: null,
-//     correctOption: null,
-//     programLang: null,
-//     themes: null,
-//     explanation: null,
-//     difficulty: null,
-//     reward: null,
-//   } 
-// }
-
-// const quizBuilderPusher = (bot, chatId, messageId, quizBuilder) => {
-//   for (key of quizBuilder) {
-//     if (quizBuilder[key] === null) {
-//       bot.sendMessage(chatId, `${quizBuilderPlaceholder[key]}`, {
-//         parse_mode: 'HTML',
-//       });
-//     }
-//   }
-// }
-
 // const arrayToChat = arr => {
 //   if (!Array.isArray(arr) || arr.length === 0) {
 //     return '';
