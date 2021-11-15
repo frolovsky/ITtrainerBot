@@ -104,3 +104,19 @@ dist
 .tern-port
 
 .idea
+
+# FRONTEND
+frontend-app/.DS_Store
+frontend-app/node_modules
+frontend-app/dist
+
+# FRONTEND local env files
+frontend-app/.env.local
+frontend-app/.env.*.local
+
+# FRONTEND Log files
+frontend-app/npm-debug.log*
+frontend-app/yarn-debug.log*
+frontend-app/yarn-error.log*
+frontend-app/pnpm-debug.log*
+
