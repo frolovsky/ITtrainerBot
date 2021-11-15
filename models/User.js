@@ -9,19 +9,111 @@ const userSchema = new Schema({
   },
   username: String,
   name: String,
-  lastActivitiy: Date,
+  lastActivity: Date,
   lastTheme: String,
-  scores: {
-    javascript: Number,
-    python: Number,
-    markup: Number,
+  answers: [{
+    id: String,
+    date: Date,
+    isCorrect: Boolean,
+    answerId: Number,
+    attempts: [{
+      id: String,
+      date: Date,
+      isCorrect: Boolean,
+      answerId: Number,
+    }]
+  }],
+  levels: {
+    javascript: {
+      totalExp: {
+        type: Number,
+        default: 0,
+      },
+      levelName: {
+        type: String,
+        enum: ['low-', 'low', 'low+', 'mid-', 'mid', 'mid+', 'high-', 'high', 'high+', 'pro'],
+        default: 'low-'
+      }
+    },
+    html: {
+      totalExp: {
+        type: Number,
+        default: 0,
+      },
+      levelName: {
+        type: String,
+        enum: ['low-', 'low', 'low+', 'mid-', 'mid', 'mid+', 'high-', 'high', 'high+', 'pro'],
+        default: 'low-'
+      }
+    },
+    css: {
+      totalExp: {
+        type: Number,
+        default: 0,
+      },
+      levelName: {
+        type: String,
+        enum: ['low-', 'low', 'low+', 'mid-', 'mid', 'mid+', 'high-', 'high', 'high+', 'pro'],
+        default: 'low-'
+      }
+    },
+    vue: {
+      totalExp: {
+        type: Number,
+        default: 0,
+      },
+      levelName: {
+        type: String,
+        enum: ['low-', 'low', 'low+', 'mid-', 'mid', 'mid+', 'high-', 'high', 'high+', 'pro'],
+        default: 'low-'
+      }
+    },
+    react: {
+      totalExp: {
+        type: Number,
+        default: 0,
+      },
+      levelName: {
+        type: String,
+        enum: ['low-', 'low', 'low+', 'mid-', 'mid', 'mid+', 'high-', 'high', 'high+', 'pro'],
+        default: 'low-'
+      }
+    },
+    python: {
+      totalExp: {
+        type: Number,
+        default: 0,
+      },
+      levelName: {
+        type: String,
+        enum: ['low-', 'low', 'low+', 'mid-', 'mid', 'mid+', 'high-', 'high', 'high+', 'pro'],
+        default: 'low-'
+      }
+    },
   },
-  totalScore: Number,
   isAdmin: {
     type: Boolean,
     default: false
+  },
+  settings: {
+    notify: {
+      type: String,
+      enum: ['none', 'day', 'week'],
+      default: 'none'
+    },
+    complexity: {
+      type: Number,
+      min: 1,
+      max: 10,
+      default: 1
+    },
+    language: {
+      type: String,
+      enum: ['RU', 'EN'],
+      default: 'RU'
+    }
   }
-}, { versionKey: false });
+});
 
 const User = mongoose.model('User', userSchema)
 

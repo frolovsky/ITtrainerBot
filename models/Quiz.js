@@ -30,12 +30,29 @@ const quizBuilderSchema = new Schema({
   reward: Number,
 });
 
+const answerSchema = new Schema({
+  date: {
+    type: Date,
+    default: Date.now()
+  },
+  isCorrect: Boolean,
+  answerId: Number,
+  attempts: [{
+    date: {
+      type: Date,
+      default: Date.now(),
+    },
+    isCorrect: Boolean,
+    answerId: Number
+  }]
+});
+
 const JSQuiz = mongoose.model('javascript-quiz', quizSchema);
 const PythonQuiz = mongoose.model('python-quiz', quizSchema);
 const MarkupQuiz = mongoose.model('markup-quiz', quizSchema);
 const BuilderQuiz = mongoose.model('builder-quiz', quizBuilderSchema);
 
-module.exports = { 
+module.exports = {
   BuilderQuiz,
   JSQuiz,
   PythonQuiz,

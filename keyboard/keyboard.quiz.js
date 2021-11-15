@@ -3,12 +3,18 @@ module.exports = (quiz) => {
     inline_keyboard: [
       [
         {
-          text: 'Report quiz',
-          callback_data: `report-quiz-${quiz}`
+          text: 'Теория',
+          callback_data: `get-theory-quiz-${quiz}`
         },
         {
-          text: 'Back',
-          callback_data: 'start-test'
+          text: 'Пропустить',
+          callback_data: `skip-quiz-${quiz}`
+        },
+      ],
+      [
+        {
+          text: 'Ошибка в вопросе',
+          callback_data: `report-quiz-${quiz}`
         },
       ],
     ]

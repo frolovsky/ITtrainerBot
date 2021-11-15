@@ -5,18 +5,24 @@ const getUser = async (data) => {
   let user = await User.findById(data.chatId);
   if (!user) {
     user = await createUser(data)
+  } else {
+    await updateUserLastActivity(data);
   }
   return user;
 }
 
+const updateUserLastActivity = async ({ chatId }) => {
+  await User.findOneAndUpdate({ _id: chatId }, { lastActivity: Date.now() });
+}
+
 const createUser = async (data) => {
-  const user = await User.create({ 
+  return await User.create({
     _id: data.chatId,
-    lastActivitiy: Date.now(),
+    lastActivity: Date.now(),
     name: `${data.firstName}`,
-    username: data.username
+    username: data.username,
+    answers: [],
   });
-  return user;
 }
 
 const getBuilderQuiz = async () => {
@@ -32,5 +38,8 @@ const getBuilderQuiz = async () => {
 }
 
 module.exports = {
-  getUser, createUser, getBuilderQuiz
+  getUser,
+  createUser,
+  getBuilderQuiz,
+  updateUserLastActivity
 }
