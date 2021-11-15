@@ -120,3 +120,20 @@ frontend-app/yarn-debug.log*
 frontend-app/yarn-error.log*
 frontend-app/pnpm-debug.log*
 
+
+# BACKEND
+backend-app/.DS_Store
+backend-app/node_modules
+backend-app/dist
+
+# BACKEND local env files
+backend-app/.env.local
+backend-app/.env.*.local
+backend-app/.env
+
+# BACKEND Log files
+backend-app/npm-debug.log*
+backend-app/yarn-debug.log*
+backend-app/yarn-error.log*
+backend-app/pnpm-debug.log*
+
