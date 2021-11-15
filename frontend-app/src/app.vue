@@ -2,9 +2,7 @@
   <v-app>
     <v-main>
       <v-app-bar>
-        <v-app-bar-title>
-          IT trainer bot
-        </v-app-bar-title>
+        <v-app-bar-title> IT trainer bot </v-app-bar-title>
       </v-app-bar>
       <div class="app-content">
         <nav class="app-content__nav">

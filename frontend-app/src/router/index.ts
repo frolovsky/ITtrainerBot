@@ -7,20 +7,25 @@ const routes: Array<RouteConfig> = [
   {
     path: "/",
     name: "dashboard",
-    component: () => import(/* webpackChunkName: "dashboard" */ "../views/dashboard.vue"),
+    component: () =>
+      import(/* webpackChunkName: "dashboard" */ "../views/dashboard.vue"),
   },
   {
     path: "/questions",
     name: "questions",
-    component: () => import(/* webpackChunkName: "questions" */ "../views/questions.vue"),
+    component: () =>
+      import(/* webpackChunkName: "questions" */ "../views/questions.vue"),
     children: [
       {
         path: "add",
         name: "add-question",
-        component: () => import(/* webpackChunkName: "add-question" */ "../views/add-question.vue"),
-      }
-    ]
-  }
+        component: () =>
+          import(
+            /* webpackChunkName: "add-question" */ "../views/add-question.vue"
+          ),
+      },
+    ],
+  },
 ];
 
 const router = new VueRouter({
