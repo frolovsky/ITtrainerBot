@@ -3,6 +3,7 @@ import App from "./app.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
+import "@/assets/styles/mian.scss";
 
 Vue.config.productionTip = false;
 

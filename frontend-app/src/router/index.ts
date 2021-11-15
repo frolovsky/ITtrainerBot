@@ -15,16 +15,14 @@ const routes: Array<RouteConfig> = [
     name: "questions",
     component: () =>
       import(/* webpackChunkName: "questions" */ "../views/questions.vue"),
-    children: [
-      {
-        path: "add",
-        name: "add-question",
-        component: () =>
-          import(
-            /* webpackChunkName: "add-question" */ "../views/add-question.vue"
-          ),
-      },
-    ],
+  },
+  {
+    path: "/questions/add",
+    name: "add-question",
+    component: () =>
+      import(
+        /* webpackChunkName: "add-question" */ "../views/add-question.vue"
+      ),
   },
 ];
 
