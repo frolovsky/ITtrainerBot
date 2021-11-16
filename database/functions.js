@@ -1,5 +1,16 @@
-const User = require('../models/User');
-const { BuilderQuiz } = require('../models/Quiz');
+const { User } = require('../models/User');
+const { QuestionRU, QuestionEN } = require('../models/Quiz');
+
+const getQuestionModel = (lang) => {
+  switch (lang) {
+    case 'ru':
+      return QuestionRU;
+    case 'en':
+      return QuestionEN;
+    default:
+      return QuestionRU;
+  }
+}
 
 const getUser = async (data) => {
   let user = await User.findById(data.chatId);
@@ -12,7 +23,7 @@ const getUser = async (data) => {
 }
 
 const updateUserLastActivity = async ({ chatId }) => {
-  await User.findOneAndUpdate({ _id: chatId }, { lastActivity: Date.now() });
+  return await User.findOneAndUpdate({ _id: chatId }, { lastActivity: Date.now() });
 }
 
 const createUser = async (data) => {
@@ -25,21 +36,13 @@ const createUser = async (data) => {
   });
 }
 
-const getBuilderQuiz = async () => {
-  const builderQuizes = await BuilderQuiz.find();
-
-  if (builderQuizes.length === 0) {
-    const builderQuiz = await BuilderQuiz.create({ });
-    return builderQuiz;
-  } else {
-    const builderQuiz = await BuilderQuiz.findOne({}, {}, { sort: { 'created_at' : 1 } });
-    return builderQuiz;
-  }
+const getQuestions = async (lang, theme) => {
+  return getQuestionModel(lang).findOne({ theme });
 }
 
 module.exports = {
   getUser,
   createUser,
-  getBuilderQuiz,
+  getQuestions,
   updateUserLastActivity
 }

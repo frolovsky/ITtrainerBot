@@ -1,48 +1,39 @@
 const mongoose = require('mongoose');
-const Schema = require('mongoose').Schema;
+const { v4 } = require('uuid');
+const { themesEnum } = require("../common/state");
 
-const quizSchema = new Schema({
-  question: {
+const QuestionSchema = new mongoose.Schema({
+  _id: {
     type: String,
+    default: v4
+  },
+  theme: {
+    type: String,
+    enum: themesEnum,
     required: true
   },
-  options: [String],
-  correctOption: {
-    type: Number,
-    required: true
-  },
-  attempts: {
-    total: Number,
-    success: Number
-  },
-  themes: [String],
-  explanation: [String],
-  reward: Number,
-});
-
-const answerSchema = new Schema({
-  date: {
-    type: Date,
-    default: Date.now()
-  },
-  isCorrect: Boolean,
-  answerId: Number,
-  attempts: [{
-    date: {
-      type: Date,
-      default: Date.now(),
+  text: String,
+  data: [{
+    _id: {
+      type: String,
+      default: v4
     },
-    isCorrect: Boolean,
-    answerId: Number
-  }]
+    text: String,
+    options: [String],
+    correctOption: Number,
+    reward: Number,
+    materials: String,
+    images: [{
+      data: Buffer,
+      contentType: String,
+    }],
+  }],
 });
 
-const JSQuiz = mongoose.model('javascript-quiz', quizSchema);
-const PythonQuiz = mongoose.model('python-quiz', quizSchema);
-const MarkupQuiz = mongoose.model('markup-quiz', quizSchema);
+const QuestionRU = new mongoose.model('question', QuestionSchema, 'questions-ru');
+const QuestionEN = new mongoose.model('question-en', QuestionSchema, 'questions-en');
 
 module.exports = {
-  JSQuiz,
-  PythonQuiz,
-  MarkupQuiz
+  QuestionRU,
+  QuestionEN,
 }

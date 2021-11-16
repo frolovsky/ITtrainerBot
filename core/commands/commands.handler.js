@@ -15,11 +15,10 @@ const router = async (bot, chatId, command, messageId) => {
     });
   }
   if (command === '/settings') {
-    bot.sendMessage(chatId, 'Выбери язык программирования и приступай к выполнению тестов! После каждого ответа мы будем посылать тебе новый вопрос, отключить эту функцию ты можешь в настройках\n<code>/settings - Настройки бота</code>', {
+    return bot.sendMessage(chatId, 'Настройки профиля', {
       parse_mode: 'HTML',
       reply_markup: themesKeyboard
     });
-    return;
   }
   if (command === '/study') {
     return bot.sendMessage(chatId, 'Отправь боту сообщение формата: \n <code>язык_программирования тема</code> \n(пример: javascript promise) \n Либо выбери язык программирования ниже', {

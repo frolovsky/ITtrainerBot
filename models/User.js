@@ -1,5 +1,6 @@
-const mongoose = require('mongoose');
-const Schema = require('mongoose').Schema;
+const { model, Schema } = require('mongoose');
+const { v4 } = require("uuid");
+const { languages } = require("../common/state");
 
 const userSchema = new Schema({
   _id: Number,
@@ -11,18 +12,7 @@ const userSchema = new Schema({
   name: String,
   lastActivity: Date,
   lastTheme: String,
-  answers: [{
-    id: String,
-    date: Date,
-    isCorrect: Boolean,
-    answerId: Number,
-    attempts: [{
-      id: String,
-      date: Date,
-      isCorrect: Boolean,
-      answerId: Number,
-    }]
-  }],
+  answers: [String],
   levels: {
     javascript: {
       totalExp: {
@@ -92,6 +82,10 @@ const userSchema = new Schema({
     },
   },
   settings: {
+    arcadeMode: {
+      type: Boolean,
+      default: true,
+    },
     notify: {
       type: String,
       enum: ['none', 'day', 'week'],
@@ -105,12 +99,34 @@ const userSchema = new Schema({
     },
     language: {
       type: String,
-      enum: ['RU', 'EN'],
-      default: 'RU'
+      enum: ['ru', 'en'],
+      default: 'ru'
     }
   }
 });
 
-const User = mongoose.model('User', userSchema)
+const UserAnswerSchema = new Schema({
+  _id: {
+    type: String,
+    default: v4
+  },
+  userId: String,
+  questionId: String,
+  date: {
+    type: Date,
+    default: Date.now()
+  },
+  isCorrect: Boolean,
+  lang: {
+    type: String,
+    enum: languages,
+  }
+});
 
-module.exports = User;
+const User = model('User', userSchema);
+const UserAnswer = new model('user-answer', UserAnswerSchema, 'user-answers');
+
+module.exports = {
+  User,
+  UserAnswer,
+};
