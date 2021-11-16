@@ -11,6 +11,7 @@ const QuestionSchema = new mongoose.Schema({
     enum: ['javascript', 'html', 'css', 'vue', 'react', 'python'],
     required: true
   },
+  text: String,
   data: [{
     _id: {
       type: String,
