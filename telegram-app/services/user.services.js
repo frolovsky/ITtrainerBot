@@ -1,6 +1,6 @@
-const { getUser } = require("./../database");
-const { updateUserLastActivity } = require("./../database");
-const { user, setUser } = require("./../common/state");
+const { getUser } = require("../database");
+const { updateUserLastActivity } = require("../database");
+const { user, setUser } = require("../common/state");
 
 const checkUserService = async (chatId, firstName, username) => {
   const data = user

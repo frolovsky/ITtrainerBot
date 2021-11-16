@@ -1,4 +1,4 @@
-const { user } = require("./../common/state");
+const { user } = require("../common/state");
 
 const getPoll = (questions) => {
   return questions.data[0];

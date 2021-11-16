@@ -1,4 +1,4 @@
-const { themes } = require('./../common/state');
+const { themes } = require('../common/state');
 
 const keyboard = themes.reduce((acc, item, index) => {
   if (index % 2 === 0) {

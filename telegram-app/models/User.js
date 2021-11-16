@@ -3,7 +3,10 @@ const { v4 } = require("uuid");
 const { languages } = require("../common/state");
 
 const userSchema = new Schema({
-  _id: Number,
+  _id: {
+    type: String,
+    default: v4
+  },
   created: {
     type: Date,
     default: Date.now()

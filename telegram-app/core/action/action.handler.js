@@ -1,6 +1,6 @@
 const { quizKeyboard, themesKeyboard } = require('../../keyboard');
 const { getQuestions } = require('../../database/functions');
-const { getPoll } = require('./../../services/poll.serivces');
+const { getPoll } = require('../../services/poll.serivces');
 
 
 module.exports = async (bot, data, options) => {
