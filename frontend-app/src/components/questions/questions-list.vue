@@ -10,7 +10,8 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import api from "@/common/api";
+import { Action, State } from "vuex-class";
+import { QuestionsState } from "@/store/questions/types";
 import { QuestionItemData } from "@/types/questions";
 
 const QuestionItem = () =>
@@ -25,15 +26,18 @@ const QuestionItem = () =>
   },
 })
 export default class QuestionsList extends Vue {
-  questions: QuestionItemData[] = [];
+  @State("questions") questionsState!: QuestionsState;
+  @Action("fetchQuestions", { namespace: "questions" })
+  fetchQuestions!: () => Promise<void>;
 
-  async fetchQuestions(): Promise<void> {
-    const { data } = await api.get<QuestionItemData[]>("/questions");
-    this.questions = data;
+  get questions(): QuestionItemData[] {
+    return this.questionsState.questions;
   }
 
   async created(): Promise<void> {
-    await this.fetchQuestions();
+    if (!this.questions.length) {
+      await this.fetchQuestions();
+    }
   }
 }
 </script>
