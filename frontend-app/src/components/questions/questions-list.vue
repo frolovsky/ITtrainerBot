@@ -42,4 +42,10 @@ export default class QuestionsList extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.questions-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  grid-gap: 50px;
+}
+</style>

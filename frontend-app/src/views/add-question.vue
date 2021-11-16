@@ -1,6 +1,6 @@
 <template>
   <div class="add-question">
-    <h1>Добавить вопрос</h1>
+    <h1 class="questions-title">Добавить вопрос</h1>
   </div>
 </template>
 
@@ -12,3 +12,9 @@ import { Component, Vue } from "vue-property-decorator";
 })
 export default class AddQuestion extends Vue {}
 </script>
+
+<style lang="scss" scoped>
+.questions-title {
+  margin-bottom: 30px;
+}
+</style>

@@ -73,13 +73,19 @@ export default class App extends Vue {}
     display: block;
   }
 }
+.content {
+  width: 100%;
+  padding: 0 50px 50px 0;
+}
 .app-content {
   display: flex;
+  align-items: stretch;
 
   &__nav {
-    height: calc(100vh - 150px);
+    min-height: calc(100vh - 150px);
     margin-right: 50px;
     border-right: 4px solid #000;
+    flex-shrink: 0;
 
     ul,
     li {

@@ -1,6 +1,6 @@
 <template>
   <div class="questions">
-    <h1>Список вопросов</h1>
+    <h1 class="questions-title">Список вопросов</h1>
     <question-list />
   </div>
 </template>
@@ -21,3 +21,9 @@ const QuestionList = () =>
 })
 export default class Questions extends Vue {}
 </script>
+
+<style lang="scss" scoped>
+.questions-title {
+  margin-bottom: 30px;
+}
+</style>
