@@ -19,13 +19,14 @@ router.route('/').get(async (req, res, next) => {
   }
 });
 
-router.route('/').post(upload.array('images'), async (req, res, next) => {
+router.route('/:theme').post(upload.array('images'), async (req, res, next) => {
   try {
-    const images = req.files.map(file => ({
+    const { theme } = req.params;
+    const images = req.files && req.files.length ? req.files.map(file => ({
       data: readFileSync(path.join(__dirname + '../../../uploads/' + file.filename)),
       contentType: file.mimetype,
-    }));
-    const question = await questionsService.create(getQuestionLang(req.body), {
+    })) : [];
+    const question = await questionsService.create(getQuestionLang(req.body), theme,{
       ...req.body,
       images,
     });

@@ -6,14 +6,25 @@ const QuestionSchema = new mongoose.Schema({
     type: String,
     default: v4
   },
-  text: String,
-  options: [String],
-  correctOption: Number,
-  reward: Number,
-  materials: String,
-  images: [{
-    data: Buffer,
-    contentType: String,
+  theme: {
+    type: String,
+    enum: ['javascript', 'html', 'css', 'vue', 'react', 'python'],
+    required: true
+  },
+  data: [{
+    _id: {
+      type: String,
+      default: v4
+    },
+    text: String,
+    options: [String],
+    correctOption: Number,
+    reward: Number,
+    materials: String,
+    images: [{
+      data: Buffer,
+      contentType: String,
+    }],
   }],
 });
 
