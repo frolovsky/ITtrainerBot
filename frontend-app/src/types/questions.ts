@@ -1,5 +1,6 @@
 export interface QuestionItemData {
-  _id: string;
+  _id?: string;
+  theme?: string;
   text: string;
   options: string[];
   correctOption: number;

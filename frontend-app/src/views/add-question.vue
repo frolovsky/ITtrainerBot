@@ -4,6 +4,18 @@
     <form class="add-question-form">
       <div class="form-block">
         <label class="form-label">
+          <span class="form-label__text">Категория: </span>
+          <select v-model="category">
+            <option
+                v-for="(theme, i) in themes"
+                :key="i" :value="theme">
+              {{ theme }}
+            </option>
+          </select>
+        </label>
+      </div>
+      <div class="form-block">
+        <label class="form-label">
           <span class="form-label__text">Текст вопроса: </span>
           <textarea v-model="text"></textarea>
         </label>
@@ -48,7 +60,7 @@
       <div class="form-block">
         <label class="form-label">
           <span class="form-label__text">Награда EXP: </span>
-          <input v-model="reward" />
+          <input v-model.number="reward" />
         </label>
       </div>
       <div class="form-block">
@@ -64,13 +76,20 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { Action } from "vuex-class";
+import { QuestionItemData } from '@/types/questions';
 
 @Component({
   name: "addQuestion",
 })
 export default class AddQuestion extends Vue {
+  @Action('addQuestion', { namespace: 'questions' })
+  addQuestion!: ({ question, theme }: { question: QuestionItemData; theme: string }) => Promise<void>;
+
   text = "";
+  category = "";
   options: string[] = ["", "", "", ""];
+  themes: string[] = ['javascript', 'html', 'css', 'vue', 'react', 'python'];
   correct = 0;
   reward = 0;
   materials = "";
@@ -84,8 +103,26 @@ export default class AddQuestion extends Vue {
     this.options.splice(i, 1);
   }
 
-  onSubmit(): void {
-    console.log("submit");
+  async onSubmit(): Promise<void> {
+    await this.addQuestion({
+      question: {
+        text: this.text,
+        materials: this.materials,
+        options: this.options,
+        reward: this.reward,
+        correctOption: this.correct
+      },
+      theme: this.category
+    });
+    this.resetData();
+  }
+
+  resetData(): void {
+    this.text = "";
+    this.options = ["", "", "", ""];
+    this.correct = 0;
+    this.reward = 0;
+    this.materials = "";
   }
 }
 </script>
@@ -116,7 +153,8 @@ export default class AddQuestion extends Vue {
   }
 
   textarea,
-  input {
+  input,
+  select {
     border-radius: 5px;
     padding: 5px;
     border: 1px solid #eee;
