@@ -6,9 +6,7 @@
         <label class="form-label">
           <span class="form-label__text">Категория: </span>
           <select v-model="category">
-            <option
-                v-for="(theme, i) in themes"
-                :key="i" :value="theme">
+            <option v-for="(theme, i) in themes" :key="i" :value="theme">
               {{ theme }}
             </option>
           </select>
@@ -77,19 +75,25 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Action } from "vuex-class";
-import { QuestionItemData } from '@/types/questions';
+import { QuestionItemData } from "@/types/questions";
 
 @Component({
   name: "addQuestion",
 })
 export default class AddQuestion extends Vue {
-  @Action('addQuestion', { namespace: 'questions' })
-  addQuestion!: ({ question, theme }: { question: QuestionItemData; theme: string }) => Promise<void>;
+  @Action("addQuestion", { namespace: "questions" })
+  addQuestion!: ({
+    question,
+    theme,
+  }: {
+    question: QuestionItemData;
+    theme: string;
+  }) => Promise<void>;
 
   text = "";
   category = "";
   options: string[] = ["", "", "", ""];
-  themes: string[] = ['javascript', 'html', 'css', 'vue', 'react', 'python'];
+  themes: string[] = ["javascript", "html", "css", "vue", "react", "python"];
   correct = 0;
   reward = 0;
   materials = "";
@@ -110,9 +114,9 @@ export default class AddQuestion extends Vue {
         materials: this.materials,
         options: this.options,
         reward: this.reward,
-        correctOption: this.correct
+        correctOption: this.correct,
       },
-      theme: this.category
+      theme: this.category,
     });
     this.resetData();
   }
