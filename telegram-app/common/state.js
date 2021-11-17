@@ -29,14 +29,67 @@ const themesEnum = themes.map(theme => theme.theme);
 
 const languages = ['ru', 'en'];
 
-let user = null;
-const setUser = (data) => {
-  user = data;
+class UserState {
+  constructor(data) {
+    this.data = data;
+  }
+
+  getData() {
+    return this.data;
+  }
+
+  setData(data) {
+    this.data = data;
+  }
 }
+
+class CacheParent {
+  constructor() {
+    this.data = [];
+  }
+  getData(id) {
+    return this.data.find(i => i._id === id);
+  }
+
+  pushData(data) {
+    this.data.push(data);
+  }
+
+  checkAndPush(...params) {
+    const data = Object.assign({}, ...params);
+    if (!this.getData(data._id)) {
+      this.pushData(data);
+    }
+  }
+
+  updateData(data) {
+    const entityIndex = this.data.findIndex(i => i._id === data._id);
+    if (entityIndex !== -1) {
+      this.data[entityIndex] = { ...this.data[entityIndex], ...data };
+    }
+  }
+}
+
+class QuestionsCache extends CacheParent {
+  constructor() {
+    super();
+  }
+}
+
+class UserAnswersCache extends CacheParent {
+  constructor() {
+    super();
+  }
+}
+
+const user = new UserState({});
+const questionsCache = new QuestionsCache();
+const userAnswersCache = new UserAnswersCache();
 
 module.exports = {
   user,
-  setUser,
+  userAnswersCache,
+  questionsCache,
   themes,
   themesEnum,
   languages

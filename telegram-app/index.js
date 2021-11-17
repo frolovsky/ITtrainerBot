@@ -1,14 +1,14 @@
 const { API_TOKEN } = require('./common/config');
 const TelegramBot = require('node-telegram-bot-api');
 const { action, router } = require('./core');
-const db = require('./database');
-const { checkUserService } = require('./services/user.services');
+const { init, updateUserAnswerByPollId, updateUser } = require('./database');
+const { checkUserService, calculateUserExp } = require('./services/user.services');
+const { checkPollCorrect } = require('./services/poll.serivces');
+const { userAnswersCache, user, questionsCache } = require('./common/state');
 
 const bot = new TelegramBot(API_TOKEN, {
   polling: true
 });
-
-let user = null;
 
 bot.on('message', async (message) => {
   const chatId = message.chat.id;
@@ -22,16 +22,29 @@ bot.on('message', async (message) => {
 
 bot.on('callback_query', async (callbackQuery) => {
   const { data, message } = callbackQuery;
+  const userData = user.getData();
   const options = {
     chatId: message.chat.id,
     messageId: message.message_id,
-    lang: user ? user.settings.language : 'ru',
+    lang: Object.keys(userData).length ? userData.settings.language : 'ru',
   };
-  const promiseTasks = [];
-  promiseTasks.push(checkUserService(message.chat.id, message.from.first_name, message.from.username));
-  promiseTasks.push(action.actionHandler(bot, data, options))
-  await Promise.all(promiseTasks)
+  await checkUserService(message.chat.id, message.from.first_name, message.from.username);
+  await action.actionHandler(bot, data, options);
 });
 
-db.init();
+bot.on('poll', async (message) => {
+  const { id } = message;
+  const userData = user.getData();
+  const isCorrect = checkPollCorrect(message);
+  const updatedUserAnswer = await updateUserAnswerByPollId(id, isCorrect);
+  userAnswersCache.updateData(updatedUserAnswer);
+  const { reward, theme } = questionsCache.getData(updatedUserAnswer.questionId);
+  const exp = calculateUserExp(isCorrect, { reward, theme });
+  await updateUser(userData._id, {
+    $push: { answers: updatedUserAnswer._id },
+    $set: { [`levels.${theme}.totalExp`]: exp },
+  });
+});
+
+init();
 

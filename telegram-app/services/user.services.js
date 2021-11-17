@@ -1,12 +1,17 @@
 const { getUser } = require("../database");
 const { updateUserLastActivity } = require("../database");
-const { user, setUser } = require("../common/state");
+const { user, questionsCache } = require("../common/state");
 
 const checkUserService = async (chatId, firstName, username) => {
-  const data = user
+  const data = Object.keys(user.getData()).length
     ? await updateUserLastActivity({ chatId })
     : await getUser({ chatId, firstName, username });
-  setUser(data);
+  user.setData(data);
 };
 
-module.exports = { checkUserService };
+const calculateUserExp = (isCorrect, { reward, theme }) => {
+  let exp = user.getData().levels[theme].totalExp;
+  return isCorrect ? exp + reward : exp;
+};
+
+module.exports = { checkUserService, calculateUserExp };

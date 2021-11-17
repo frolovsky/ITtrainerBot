@@ -18,6 +18,12 @@ module.exports = {
     ],
     [
       {
+        text: 'Тренировка перед собеседованием',
+        callback_data: 'start-interview'
+      }
+    ],
+    [
+      {
         text: 'Учебные материалы',
         callback_data: 'study-materials'
       }

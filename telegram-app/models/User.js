@@ -3,10 +3,7 @@ const { v4 } = require("uuid");
 const { languages } = require("../common/state");
 
 const userSchema = new Schema({
-  _id: {
-    type: String,
-    default: v4
-  },
+  _id: Number,
   created: {
     type: Date,
     default: Date.now()
@@ -113,13 +110,14 @@ const UserAnswerSchema = new Schema({
     type: String,
     default: v4
   },
-  userId: String,
+  pollId: String,
+  userId: Number,
   questionId: String,
   date: {
     type: Date,
     default: Date.now()
   },
-  isCorrect: Boolean,
+  isCorrect: Schema.Types.Mixed,
   lang: {
     type: String,
     enum: languages,

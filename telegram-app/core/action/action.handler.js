@@ -1,7 +1,8 @@
-const { quizKeyboard, themesKeyboard } = require('../../keyboard');
-const { getQuestions } = require('../../database/functions');
-const { getPoll } = require('../../services/poll.serivces');
-
+const { quizKeyboard, themesKeyboard, startKeyboard } = require('../../keyboard');
+const { getQuestions, saveUserAnswer } = require('../../database');
+const { getQuestion } = require('../../services/poll.serivces');
+const { user, userAnswersCache } = require('./../../common/state');
+const { getThemeText, clearPrototype } = require('./../../common/helpers');
 
 module.exports = async (bot, data, options) => {
   switch(true) {
@@ -14,13 +15,27 @@ module.exports = async (bot, data, options) => {
     case (/\D+-getpoll$/).test(data):
       const theme = String(data).split('-')[0];
       const questions = await getQuestions(options.lang, theme);
-      console.log(questions);
-      const poll = getPoll(questions);
-      await bot.sendPoll(options.chatId, poll.text, poll.options, {
-        type: 'quiz',
-        correct_option_id: poll.correctOption,
-        reply_markup: quizKeyboard(poll._id),
-      })
+      const question = await getQuestion(questions, options.lang, theme);
+      if (question) {
+        const { poll } = await bot.sendPoll(options.chatId, question.text, question.options, {
+          type: 'quiz',
+          correct_option_id: question.correctOption,
+          reply_markup: quizKeyboard(question._id),
+        });
+        const userAnswer = await saveUserAnswer({
+          pollId: poll.id,
+          userId: options.chatId,
+          questionId: question._id,
+          isCorrect: 'pending',
+          lang: user.getData().settings.language
+        });
+        userAnswersCache.checkAndPush(clearPrototype(userAnswer));
+      } else {
+        await bot.sendMessage(options.chatId, `Вы прошли все доступные тесты по ${getThemeText(theme)}.`, {
+          parse_mode: 'HTML',
+          reply_markup: startKeyboard
+        });
+      }
       break;
 
     case (/^report-quiz-\d+$/).test(data):
