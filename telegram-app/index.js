@@ -38,12 +38,15 @@ bot.on('poll', async (message) => {
   const isCorrect = checkPollCorrect(message);
   const updatedUserAnswer = await updateUserAnswerByPollId(id, isCorrect);
   userAnswersCache.updateData(updatedUserAnswer);
-  const { reward, theme } = questionsCache.getData(updatedUserAnswer.questionId);
+  const { reward, theme, materials } = questionsCache.getData(updatedUserAnswer.questionId);
   const exp = calculateUserExp(isCorrect, { reward, theme });
   await updateUser(userData._id, {
     $push: { answers: updatedUserAnswer._id },
     $set: { [`levels.${theme}.totalExp`]: exp },
   });
+  if (materials && !isCorrect) {
+    await bot.sendMessage(userData._id, `Неправильно! Ознакомьтесь с учебными материалами, чтобы узнать правильный ответ:\n\n ${materials}`);
+  }
 });
 
 init();
