@@ -5,6 +5,7 @@ const { init, updateUserAnswerByPollId, updateUser } = require('./database');
 const { checkUserService, calculateUserExp } = require('./services/user.services');
 const { checkPollCorrect } = require('./services/poll.serivces');
 const { userAnswersCache, user, questionsCache } = require('./common/state');
+const { materialsKeyboard } = require("./keyboard");
 
 const bot = new TelegramBot(API_TOKEN, {
   polling: true
@@ -44,8 +45,12 @@ bot.on('poll', async (message) => {
     $push: { answers: updatedUserAnswer._id },
     $set: { [`levels.${theme}.totalExp`]: exp },
   });
+  console.log(theme);
   if (materials && !isCorrect) {
-    await bot.sendMessage(userData._id, `Неправильно! Ознакомьтесь с учебными материалами, чтобы узнать правильный ответ:\n\n ${materials}`);
+    await bot.sendMessage(userData._id, `Неправильно! Ознакомьтесь с учебными материалами, чтобы узнать правильный ответ:\n\n ${materials}`, {
+      parse_mode: 'HTML',
+      reply_markup: materialsKeyboard(theme)
+    });
   }
 });
 
