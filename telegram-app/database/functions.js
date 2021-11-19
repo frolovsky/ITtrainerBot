@@ -1,5 +1,6 @@
 const { User, UserAnswer } = require('../models/User');
 const { QuestionRU, QuestionEN } = require('../models/Quiz');
+const { user } = require('../common/state');
 
 const getQuestionModel = (lang) => {
   switch (lang) {
@@ -27,7 +28,9 @@ const updateUserLastActivity = async ({ chatId }) => {
 };
 
 const updateUser = async (id, userData) => {
-  return User.findOneAndUpdate({ _id: id }, { ...userData });
+  const data = await User.findOneAndUpdate({ _id: id }, { ...userData });
+  user.setData(data);
+  return data;
 };
 
 const createUser = async (data) => {

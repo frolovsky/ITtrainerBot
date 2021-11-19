@@ -4,11 +4,7 @@ module.exports = {
       {
         text: 'Мой профиль',
         callback_data: 'my-profile'
-      },
-      {
-        text: 'Настройки',
-        callback_data: 'setting'
-      },
+      }
     ],
     [
       {

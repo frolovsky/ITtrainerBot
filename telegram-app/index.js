@@ -16,7 +16,7 @@ bot.on('message', async (message) => {
   const text = message.text;
   await checkUserService(chatId, message.from.first_name, message.from.username);
 
-  if (text.startsWith('/')) {
+  if (text && text.startsWith('/')) {
     await router(bot, chatId, text, message.message_id)
   }
 });
@@ -45,7 +45,7 @@ bot.on('poll', async (message) => {
     $push: { answers: updatedUserAnswer._id },
     $set: { [`levels.${theme}.totalExp`]: exp },
   });
-  console.log(theme);
+
   if (materials && !isCorrect) {
     await bot.sendMessage(userData._id, `Неправильно! Ознакомьтесь с учебными материалами, чтобы узнать правильный ответ:\n\n ${materials}`, {
       parse_mode: 'HTML',

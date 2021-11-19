@@ -1,7 +1,15 @@
-const { themesKeyboard, startKeyboard, studyKeyboard } = require('../../keyboard');
+const {
+  themesKeyboard,
+  startKeyboard,
+  studyKeyboard,
+  profileKeyboard,
+  settingsKeyboard,
+} = require('../../keyboard');
 const commandListString = require('./commands.list');
+const { user } = require('./../../common/state');
 
 const router = async (bot, chatId, command, messageId) => {
+  const { settings } = user.getData();
   if (command === '/start') {
     return bot.sendMessage(chatId, `Привет! Я бот в котором ты можешь проверять свои знания и узнавать новое. Список команд бота: ${commandListString}`, {
       parse_mode: 'HTML',
@@ -17,13 +25,19 @@ const router = async (bot, chatId, command, messageId) => {
   if (command === '/settings') {
     return bot.sendMessage(chatId, 'Настройки профиля', {
       parse_mode: 'HTML',
-      reply_markup: themesKeyboard
+      reply_markup: settingsKeyboard(settings)
     });
   }
   if (command === '/study') {
     return bot.sendMessage(chatId, 'Отправь боту сообщение формата: \n <code>язык_программирования тема</code> \n(пример: javascript promise) \n Либо выбери язык программирования ниже', {
       parse_mode: 'HTML',
       reply_markup: studyKeyboard
+    });
+  }
+  if (command === '/profile') {
+    return bot.sendMessage(chatId, 'Профиль', {
+      parse_mode: 'HTML',
+      reply_markup: profileKeyboard
     });
   }
   return bot.sendMessage(chatId, 'Команда не найдена');
