@@ -77,10 +77,20 @@ const getUserAchievements = () => {
   }).join('\n');
 }
 
+const sendUserCert = async (theme, bot) => {
+  const { totalExp } = user.data.levels[theme];
+  const message = totalExp >= MIN_SCORE_FOR_DOWNLOAD_CERT
+    ? `✅ Ваш сертификат по ${getThemeText(theme)} формируется и будет готов в течение 30 минут и будет выслан вам в личном сообщении.`
+    : `❌ Не хватает очков для получения сертификата по ${getThemeText(theme)}: ${totalExp}/${MIN_SCORE_FOR_DOWNLOAD_CERT - totalExp}`;
+
+  await bot.sendMessage(user.data._id, message);
+}
+
 module.exports = {
   checkUserService,
   calculateUserExp,
   toggleUserSetting,
   setUserSetting,
   getUserAchievements,
+  sendUserCert
 };

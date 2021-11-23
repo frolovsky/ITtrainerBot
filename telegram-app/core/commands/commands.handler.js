@@ -19,7 +19,7 @@ const router = async (bot, chatId, command, messageId) => {
   if (command === '/quiz') {
     return bot.sendMessage(chatId, 'Выбери язык программирования и приступай к выполнению тестов! После каждого ответа мы будем посылать тебе новый вопрос, отключить эту функцию ты можешь в настройках\n<code>/settings - Настройки бота</code>', {
       parse_mode: 'HTML',
-      reply_markup: themesKeyboard
+      reply_markup: themesKeyboard('getpoll')
     });
   }
   if (command === '/settings') {

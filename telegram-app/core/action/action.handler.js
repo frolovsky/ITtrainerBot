@@ -8,7 +8,7 @@ const {
 } = require('../../keyboard');
 const { getQuestions, saveUserAnswer } = require('../../database');
 const { getQuestion } = require('../../services/poll.serivces');
-const { toggleUserSetting, setUserSetting, getUserAchievements } = require('../../services/user.services');
+const { toggleUserSetting, setUserSetting, getUserAchievements, sendUserCert } = require('../../services/user.services');
 const { user, userAnswersCache } = require('./../../common/state');
 const { getThemeText, clearPrototype } = require('./../../common/helpers');
 const { MIN_SCORE_FOR_DOWNLOAD_CERT } = require('./../../common/config');
@@ -20,7 +20,7 @@ module.exports = async (bot, data, options) => {
     case (/^start-test$/).test(data):
       await bot.sendMessage(options.chatId, 'Выбери язык программирования и приступай к выполнению тестов! После каждого ответа мы будем посылать тебе новый вопрос, отключить эту функцию ты можешь в настройках\n<code>/settings - Открыть настройки</code>', {
         parse_mode: 'HTML',
-        reply_markup: themesKeyboard
+        reply_markup: themesKeyboard('getpoll')
       })
       break;
     case (/\D+-getpoll$/).test(data):
@@ -62,6 +62,11 @@ module.exports = async (bot, data, options) => {
       await setUserSetting(userData, prop, bot);
       break;
     }
+    case (/\D+-get-cert$/).test(data): {
+      const theme = String(data).split('-')[0];
+      await sendUserCert(theme, bot);
+      break;
+    }
     case data === 'my-profile':
       await bot.sendMessage(options.chatId, 'Профиль', {
         parse_mode: 'HTML',
@@ -78,6 +83,12 @@ module.exports = async (bot, data, options) => {
       await bot.sendMessage(options.chatId, `Минимальное количество очков для выгрузки сертификата: ${MIN_SCORE_FOR_DOWNLOAD_CERT}. \n\n ${getUserAchievements()}`, {
         parse_mode: 'HTML',
         reply_markup: achievementsKeyboard
+      });
+      break;
+    case data === 'get-certificate':
+      await bot.sendMessage(options.chatId, 'Выбери технологию для получения сертификата', {
+        parse_mode: 'HTML',
+        reply_markup: themesKeyboard('get-cert')
       });
       break;
     default:
