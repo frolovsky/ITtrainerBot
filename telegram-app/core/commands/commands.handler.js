@@ -9,7 +9,7 @@ const commandListString = require('./commands.list');
 const { user } = require('./../../common/state');
 
 const router = async (bot, chatId, command, messageId) => {
-  const { settings } = user.getData();
+  const { settings } = user.data;
   if (command === '/start') {
     return bot.sendMessage(chatId, `Привет! Я бот в котором ты можешь проверять свои знания и узнавать новое. Список команд бота: ${commandListString}`, {
       parse_mode: 'HTML',

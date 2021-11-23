@@ -3,7 +3,7 @@ const { getUserAnswers } = require("../database");
 const { clearPrototype } = require("../common/helpers")
 
 const getQuestion = async (questions, lang, theme) => {
-  const answers = await getUserAnswers(user.getData()._id);
+  const answers = await getUserAnswers(user.data._id);
   if (!answers) {
     questionsCache.checkAndPush(clearPrototype(questions.data[0]), { lang, theme });
     return questions.data[0];

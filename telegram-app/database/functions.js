@@ -28,7 +28,7 @@ const updateUserLastActivity = async ({ chatId }) => {
 };
 
 const updateUser = async (id, userData) => {
-  const data = await User.findOneAndUpdate({ _id: id }, { ...userData });
+  const data = await User.findOneAndUpdate({ _id: id }, { ...userData }, { new: true });
   user.setData(data);
   return data;
 };

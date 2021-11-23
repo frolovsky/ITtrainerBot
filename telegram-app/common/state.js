@@ -32,14 +32,15 @@ const languages = ['ru', 'en'];
 class UserState {
   constructor(data) {
     this.data = data;
-  }
-
-  getData() {
-    return this.data;
+    this.botNextStep = null;
   }
 
   setData(data) {
     this.data = data;
+  }
+
+  setBotNextStep(nextStep) {
+    this.botNextStep = nextStep;
   }
 }
 

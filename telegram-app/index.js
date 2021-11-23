@@ -17,13 +17,21 @@ bot.on('message', async (message) => {
   await checkUserService(chatId, message.from.first_name, message.from.username);
 
   if (text && text.startsWith('/')) {
-    await router(bot, chatId, text, message.message_id)
+    await router(bot, chatId, text, message.message_id);
+  } else if (text && user.botNextStep) {
+    const options = {
+      chatId,
+      messageId: message.message_id,
+      lang: Object.keys(user.data).length ? user.data.settings.language : 'ru',
+    };
+    user.setBotNextStep({ ...user.botNextStep, value: text });
+    await action.actionHandler(bot, user.botNextStep.action, options);
   }
 });
 
 bot.on('callback_query', async (callbackQuery) => {
   const { data, message } = callbackQuery;
-  const userData = user.getData();
+  const userData = user.data;
   const options = {
     chatId: message.chat.id,
     messageId: message.message_id,
@@ -35,7 +43,7 @@ bot.on('callback_query', async (callbackQuery) => {
 
 bot.on('poll', async (message) => {
   const { id } = message;
-  const userData = user.getData();
+  const userData = user.data;
   const isCorrect = checkPollCorrect(message);
   const updatedUserAnswer = await updateUserAnswerByPollId(id, isCorrect);
   userAnswersCache.updateData(updatedUserAnswer);

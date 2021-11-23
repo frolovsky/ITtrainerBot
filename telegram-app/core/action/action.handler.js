@@ -7,12 +7,12 @@ const {
 } = require('../../keyboard');
 const { getQuestions, saveUserAnswer } = require('../../database');
 const { getQuestion } = require('../../services/poll.serivces');
-const { toggleUserSetting } = require('../../services/user.services');
+const { toggleUserSetting, setUserSetting } = require('../../services/user.services');
 const { user, userAnswersCache } = require('./../../common/state');
 const { getThemeText, clearPrototype } = require('./../../common/helpers');
 
 module.exports = async (bot, data, options) => {
-  const userData = user.getData();
+  const userData = user.data;
   const { settings } = userData;
   switch(true) {
     case (/^start-test$/).test(data):
@@ -49,11 +49,17 @@ module.exports = async (bot, data, options) => {
     case (/^report-quiz-\d+$/).test(data):
       console.log(`report quiz: ${data}`)
       break;
-    case (/^toggle-settings-\D+$/).test(data):
+    case (/^toggle-settings-\D+$/).test(data): {
       const prop = String(data).split('-').pop();
       const val = settings[prop];
       await toggleUserSetting(userData, prop, val, bot, options.messageId);
       break;
+    }
+    case (/^set-settings-\D+$/).test(data): {
+      const prop = String(data).split('-').pop();
+      await setUserSetting(userData, prop, bot);
+      break;
+    }
     case data === 'my-profile':
       await bot.sendMessage(options.chatId, 'Профиль', {
         parse_mode: 'HTML',
