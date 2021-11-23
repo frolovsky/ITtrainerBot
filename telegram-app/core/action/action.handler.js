@@ -4,12 +4,14 @@ const {
   startKeyboard,
   profileKeyboard,
   settingsKeyboard,
+  achievementsKeyboard,
 } = require('../../keyboard');
 const { getQuestions, saveUserAnswer } = require('../../database');
 const { getQuestion } = require('../../services/poll.serivces');
-const { toggleUserSetting, setUserSetting } = require('../../services/user.services');
+const { toggleUserSetting, setUserSetting, getUserAchievements } = require('../../services/user.services');
 const { user, userAnswersCache } = require('./../../common/state');
 const { getThemeText, clearPrototype } = require('./../../common/helpers');
+const { MIN_SCORE_FOR_DOWNLOAD_CERT } = require('./../../common/config');
 
 module.exports = async (bot, data, options) => {
   const userData = user.data;
@@ -70,6 +72,12 @@ module.exports = async (bot, data, options) => {
       await bot.sendMessage(options.chatId, 'Настройки профиля', {
         parse_mode: 'HTML',
         reply_markup: settingsKeyboard(settings)
+      });
+      break;
+    case data === 'achievements':
+      await bot.sendMessage(options.chatId, `Минимальное количество очков для выгрузки сертификата: ${MIN_SCORE_FOR_DOWNLOAD_CERT}. \n\n ${getUserAchievements()}`, {
+        parse_mode: 'HTML',
+        reply_markup: achievementsKeyboard
       });
       break;
     default:

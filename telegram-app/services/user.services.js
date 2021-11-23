@@ -2,6 +2,8 @@ const { getUser } = require("../database");
 const { updateUserLastActivity, updateUser } = require("../database");
 const { user } = require("../common/state");
 const { settingsKeyboard } = require("../keyboard");
+const { getThemeText, clearPrototype } = require("../common/helpers");
+const { MIN_SCORE_FOR_DOWNLOAD_CERT } = require('./../common/config');
 
 const checkUserService = async (chatId, firstName, username) => {
   const data = Object.keys(user.data).length
@@ -38,7 +40,7 @@ const toggleUserSetting = async (userData, prop, value, bot, messageId) => {
       console.log(prop, 'not found. profile not edited');
       break;
   }
-}
+};
 
 const setUserSetting = async (userData, prop, bot) => {
   const { value } = user.botNextStep || {};
@@ -64,6 +66,15 @@ const setUserSetting = async (userData, prop, bot) => {
       console.log(prop, 'not found. profile not edited');
       break;
   }
+};
+
+const getUserAchievements = () => {
+  const { levels } = user.data;
+  return Object.keys(clearPrototype(levels)).map(theme => {
+    const { totalExp, levelName } = levels[theme];
+    const themeName = getThemeText(theme);
+    return `${ totalExp >= MIN_SCORE_FOR_DOWNLOAD_CERT ? '✅ ' : '👀 ' }<b>${themeName}</b>\n Набрано очков (exp): ${totalExp}\n Ваш уровень: ${levelName}\n`;
+  }).join('\n');
 }
 
 module.exports = {
@@ -71,4 +82,5 @@ module.exports = {
   calculateUserExp,
   toggleUserSetting,
   setUserSetting,
+  getUserAchievements,
 };

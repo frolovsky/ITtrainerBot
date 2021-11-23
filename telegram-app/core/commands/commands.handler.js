@@ -40,6 +40,12 @@ const router = async (bot, chatId, command, messageId) => {
       reply_markup: profileKeyboard
     });
   }
+  if (command === '/interview') {
+    return bot.sendMessage(chatId, 'Профиль', {
+      parse_mode: 'HTML',
+      reply_markup: profileKeyboard
+    });
+  }
   return bot.sendMessage(chatId, 'Команда не найдена');
 }
 
