@@ -25,6 +25,8 @@ const themes = [
   }
 ];
 
+const themesEnum = themes.map(theme => theme.theme);
+
 const languages = ['ru', 'en'];
 
-module.exports = { themes, languages };
+module.exports = { themes, languages, themesEnum };

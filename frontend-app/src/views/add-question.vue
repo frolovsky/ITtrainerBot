@@ -14,6 +14,16 @@
       </div>
       <div class="form-block">
         <label class="form-label">
+          <span class="form-label__text">Язык: </span>
+          <select v-model="lang">
+            <option v-for="(lang, i) in langList" :key="i" :value="lang">
+              {{ lang }}
+            </option>
+          </select>
+        </label>
+      </div>
+      <div class="form-block">
+        <label class="form-label">
           <span class="form-label__text">Текст вопроса: </span>
           <textarea v-model="text"></textarea>
         </label>
@@ -75,25 +85,32 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Action } from "vuex-class";
-import { QuestionItemData } from "@/types/questions";
+import {
+  QuestionItemData,
+  QuestionLang,
+  QuestionThemes,
+} from "@/types/questions";
 
 @Component({
   name: "addQuestion",
 })
 export default class AddQuestion extends Vue {
   @Action("addQuestion", { namespace: "questions" })
-  addQuestion!: ({
-    question,
-    theme,
-  }: {
-    question: QuestionItemData;
-    theme: string;
-  }) => Promise<void>;
+  addQuestion!: (question: QuestionItemData) => Promise<void>;
 
   text = "";
-  category = "";
+  category = QuestionThemes.JAVASCRIPT;
   options: string[] = ["", "", "", ""];
-  themes: string[] = ["javascript", "html", "css", "vue", "react", "python"];
+  themes: QuestionThemes[] = [
+    QuestionThemes.JAVASCRIPT,
+    QuestionThemes.HTML,
+    QuestionThemes.CSS,
+    QuestionThemes.VUE,
+    QuestionThemes.REACT,
+    QuestionThemes.REACT,
+  ];
+  lang = QuestionLang.RUSSIAN;
+  langList = [QuestionLang.RUSSIAN, QuestionLang.ENGLISH];
   correct = 0;
   reward = 0;
   materials = "";
@@ -109,14 +126,13 @@ export default class AddQuestion extends Vue {
 
   async onSubmit(): Promise<void> {
     await this.addQuestion({
-      question: {
-        text: this.text,
-        materials: this.materials,
-        options: this.options,
-        reward: this.reward,
-        correctOption: this.correct,
-      },
+      text: this.text,
+      materials: this.materials,
+      options: this.options,
+      reward: this.reward,
+      correctOption: this.correct,
       theme: this.category,
+      lang: this.lang,
     });
     this.resetData();
   }

@@ -1,17 +1,7 @@
 const { User, UserAnswer } = require('../models/User');
-const { QuestionRU, QuestionEN } = require('../models/Quiz');
+const { Question } = require('../models/Quiz');
 const { user } = require('../common/state');
-
-const getQuestionModel = (lang) => {
-  switch (lang) {
-    case 'ru':
-      return QuestionRU;
-    case 'en':
-      return QuestionEN;
-    default:
-      return QuestionRU;
-  }
-};
+const {log} = require("nodemon/lib/utils");
 
 const getUser = async (data) => {
   let user = await User.findById(data.chatId);
@@ -44,7 +34,7 @@ const createUser = async (data) => {
 };
 
 const getQuestions = async (lang, theme) => {
-  return getQuestionModel(lang).findOne({ theme });
+  return Question.find({ lang, theme });
 };
 
 const getUserAnswers = async (chatId, theme) => {
@@ -52,25 +42,10 @@ const getUserAnswers = async (chatId, theme) => {
 };
 
 const getAnsweredQuestions = async (chatId, theme) => {
-  const result = [];
   const answers = await getUserAnswers(chatId, theme);
-  const [answersRu, answersEn] = answers.reduce((acc, item) => {
-    item.lang === 'ru' ? acc[0].push(item) : acc[1].push(item);
-    return acc;
-  }, [[], []]);
-  const answersRuQIds = answersRu.map(answer => answer.questionId);
-  const answersEnQIds = answersEn.map(answer => answer.questionId);
-  if (answersRu.length) {
-    const questions = await getQuestionModel('ru').findOne({ theme });
-    const filteredQuestions = questions.data.filter(question => question._id.includes(answersRuQIds));
-    result.push(...filteredQuestions);
-  }
-  if (answersEn.length) {
-    const questions = await getQuestionModel('en').findOne({ theme });
-    const filteredQuestions = questions.data.filter(question => question._id.includes(answersEnQIds));
-    result.push(...filteredQuestions);
-  }
-  return result;
+  const answerIds = answers.map(answer => answer.questionId);
+  const questions = await Question.find({  theme, _id: { $in: answerIds } });
+  return questions;
 }
 
 const saveUserAnswer = async (data) => {

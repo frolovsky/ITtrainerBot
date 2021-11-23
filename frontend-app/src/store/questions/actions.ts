@@ -10,11 +10,8 @@ export const actions: ActionTree<QuestionsState, RootState> = {
     commit("setQuestions", data);
   },
 
-  async addQuestion(
-    _context,
-    { question, theme }: { question: QuestionItemData; theme: string }
-  ) {
-    const response = await api.post(`/questions/${theme}`, question);
+  async addQuestion(_context, question: QuestionItemData) {
+    const response = await api.post(`/questions`, question);
     console.log(response);
   },
 };

@@ -9,7 +9,7 @@ const getQuestion = async (questions, lang, theme) => {
     return questions.data[0];
   }
   const answeredQuestions = answers.map(answer => answer.questionId);
-  const question = questions.data.find(question => answeredQuestions.indexOf(question._id) === -1);
+  const question = questions.find(question => answeredQuestions.indexOf(question._id) === -1);
   questionsCache.checkAndPush(clearPrototype(question), { lang, theme });
   return question;
 };
