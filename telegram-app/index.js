@@ -17,7 +17,7 @@ bot.on('message', async (message) => {
   await checkUserService(chatId, message.from.first_name, message.from.username);
 
   if (text && text.startsWith('/')) {
-    await router(bot, chatId, text, message.message_id);
+    await router(bot, chatId, text);
   } else if (text && user.botNextStep) {
     const options = {
       chatId,

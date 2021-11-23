@@ -4,11 +4,12 @@ const {
   studyKeyboard,
   profileKeyboard,
   settingsKeyboard,
+  donateKeyboard,
 } = require('../../keyboard');
 const commandListString = require('./commands.list');
 const { user } = require('./../../common/state');
 
-const router = async (bot, chatId, command, messageId) => {
+const router = async (bot, chatId, command) => {
   const { settings } = user.data;
   if (command === '/start') {
     return bot.sendMessage(chatId, `Привет! Я бот в котором ты можешь проверять свои знания и узнавать новое. Список команд бота: ${commandListString}`, {
@@ -44,6 +45,12 @@ const router = async (bot, chatId, command, messageId) => {
     return bot.sendMessage(chatId, 'Профиль', {
       parse_mode: 'HTML',
       reply_markup: profileKeyboard
+    });
+  }
+  if (command === '/donate') {
+    return bot.sendMessage(chatId, 'Нравится бот? Поддержи проект - стань его патроном.', {
+      parse_mode: 'HTML',
+      reply_markup: donateKeyboard
     });
   }
   return bot.sendMessage(chatId, 'Команда не найдена');

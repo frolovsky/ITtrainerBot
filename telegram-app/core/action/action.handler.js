@@ -5,6 +5,7 @@ const {
   profileKeyboard,
   settingsKeyboard,
   achievementsKeyboard,
+  donateKeyboard,
 } = require('../../keyboard');
 const { getQuestions, saveUserAnswer } = require('../../database');
 const { getQuestion } = require('../../services/poll.serivces');
@@ -89,6 +90,12 @@ module.exports = async (bot, data, options) => {
       await bot.sendMessage(options.chatId, 'Выбери технологию для получения сертификата', {
         parse_mode: 'HTML',
         reply_markup: themesKeyboard('get-cert')
+      });
+      break;
+    case data === 'donate':
+      await bot.sendMessage(options.chatId, 'Нравится бот? Поддержи проект - стань его патроном.', {
+        parse_mode: 'HTML',
+        reply_markup: donateKeyboard
       });
       break;
     default:
