@@ -9,7 +9,7 @@ module.exports = {
     [
       {
         text: 'Тесты',
-        callback_data: 'start-test'
+        callback_data: 'tests'
       }
     ],
     [

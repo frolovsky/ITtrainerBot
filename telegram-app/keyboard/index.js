@@ -7,6 +7,7 @@ const quizKeyboard = require('./keyboard.quiz');
 const materialsKeyboard = require('./keyboard.materials');
 const settingsKeyboard = require('./keyboard.settings');
 const donateKeyboard = require('./keyboard.donate');
+const testsKeyboard = require('./keyboard.tests');
 
 module.exports = {
   achievementsKeyboard,
@@ -18,4 +19,5 @@ module.exports = {
   studyKeyboard,
   profileKeyboard,
   settingsKeyboard,
+  testsKeyboard,
 };

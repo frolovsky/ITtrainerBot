@@ -22,7 +22,7 @@ bot.on('message', async (message) => {
     const options = {
       chatId,
       messageId: message.message_id,
-      lang: Object.keys(user.data).length ? user.data.settings.language : 'ru',
+      lang: user.data.settings.language,
     };
     user.setBotNextStep({ ...user.botNextStep, value: text });
     await action.actionHandler(bot, user.botNextStep.action, options);
@@ -31,13 +31,12 @@ bot.on('message', async (message) => {
 
 bot.on('callback_query', async (callbackQuery) => {
   const { data, message } = callbackQuery;
-  const userData = user.data;
+  await checkUserService(message.chat.id, message.from.first_name, message.from.username);
   const options = {
     chatId: message.chat.id,
     messageId: message.message_id,
-    lang: Object.keys(userData).length ? userData.settings.language : 'ru',
+    lang: user.data.settings.language,
   };
-  await checkUserService(message.chat.id, message.from.first_name, message.from.username);
   await action.actionHandler(bot, data, options);
 });
 

@@ -6,6 +6,7 @@ const {
   settingsKeyboard,
   achievementsKeyboard,
   donateKeyboard,
+  testsKeyboard,
 } = require('../../keyboard');
 const { getQuestions, saveUserAnswer, getAnsweredQuestions } = require('../../database');
 const { getQuestion } = require('../../services/poll.serivces');
@@ -18,11 +19,27 @@ module.exports = async (bot, data, options) => {
   const userData = user.data;
   const { settings } = userData;
   switch(true) {
+    case (/^tests$/).test(data):
+      await bot.sendMessage(options.chatId, '• Тесты по технологии - вопросы вперемешку на разные темы по выбранному ' +
+        'языку/фреймворку. \n• Тематические тесты - это набор вопросов по более узкой тематике внутри выбранной технологии, ' +
+        'например сборник вопросов по Promise в JavaScript или Grid layouts в CSS.', {
+        parse_mode: 'HTML',
+        reply_markup: testsKeyboard
+      })
+      break;
     case (/^start-test$/).test(data):
-      await bot.sendMessage(options.chatId, 'Выбери язык программирования и приступай к выполнению тестов! После каждого ответа мы будем посылать тебе новый вопрос, отключить эту функцию ты можешь в настройках\n<code>/settings - Открыть настройки</code>', {
+      await bot.sendMessage(options.chatId, 'Выбери тему и приступай к выполнению тестов! ' +
+        'После каждого ответа мы будем посылать тебе новый вопрос, отключить эту функцию ты можешь в ' +
+        'настройках\n<code>/settings - Открыть настройки</code>', {
         parse_mode: 'HTML',
         reply_markup: themesKeyboard('getpoll')
       })
+      break;
+    case (/^narrow-thematic$/).test(data):
+      await bot.sendMessage(options.chatId, 'Выбери тему', {
+        parse_mode: 'HTML',
+        reply_markup: themesKeyboard('narrow-thematic')
+      });
       break;
     case (/\D+-getpoll$/).test(data):
       const theme = String(data).split('-')[0];
