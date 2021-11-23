@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { v4 } = require('uuid');
-const { themesEnum } = require("../common/state");
+const { themesEnum, languages} = require("../common/state");
 
 const QuestionSchema = new mongoose.Schema({
   _id: {

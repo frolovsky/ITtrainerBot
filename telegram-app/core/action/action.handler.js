@@ -7,7 +7,7 @@ const {
   achievementsKeyboard,
   donateKeyboard,
 } = require('../../keyboard');
-const { getQuestions, saveUserAnswer } = require('../../database');
+const { getQuestions, saveUserAnswer, getAnsweredQuestions } = require('../../database');
 const { getQuestion } = require('../../services/poll.serivces');
 const { toggleUserSetting, setUserSetting, getUserAchievements, sendUserCert } = require('../../services/user.services');
 const { user, userAnswersCache } = require('./../../common/state');
@@ -39,7 +39,8 @@ module.exports = async (bot, data, options) => {
           userId: options.chatId,
           questionId: question._id,
           isCorrect: 'pending',
-          lang: settings.language
+          lang: settings.language,
+          theme,
         });
         userAnswersCache.checkAndPush(clearPrototype(userAnswer));
       } else {
@@ -66,6 +67,11 @@ module.exports = async (bot, data, options) => {
     case (/\D+-get-cert$/).test(data): {
       const theme = String(data).split('-')[0];
       await sendUserCert(theme, bot);
+      break;
+    }
+    case (/\D+-get-history$/).test(data): {
+      const theme = String(data).split('-')[0];
+      await getAnsweredQuestions(options.chatId, theme);
       break;
     }
     case data === 'my-profile':
@@ -96,6 +102,12 @@ module.exports = async (bot, data, options) => {
       await bot.sendMessage(options.chatId, 'Нравится бот? Поддержи проект - стань его патроном.', {
         parse_mode: 'HTML',
         reply_markup: donateKeyboard
+      });
+      break;
+    case data === 'answer-history':
+      await bot.sendMessage(options.chatId, 'Выбери технологию для отображения истории ответов.', {
+        parse_mode: 'HTML',
+        reply_markup: themesKeyboard('get-history')
       });
       break;
     default:

@@ -2,12 +2,6 @@ module.exports = {
   inline_keyboard: [
     [
       {
-        text: 'История ответов',
-        callback_data: 'answer-history'
-      },
-    ],
-    [
-      {
         text: 'Достижения',
         callback_data: 'achievements'
       },

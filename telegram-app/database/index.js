@@ -10,6 +10,7 @@ const {
   saveUserAnswer,
   getUserAnswerByPollId,
   updateUserAnswerByPollId,
+  getAnsweredQuestions,
 } = require('./functions')
 
 const init = () => {
@@ -37,4 +38,5 @@ module.exports = {
   saveUserAnswer,
   getUserAnswerByPollId,
   updateUserAnswerByPollId,
+  getAnsweredQuestions,
 }

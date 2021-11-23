@@ -27,6 +27,8 @@ const themes = [
 
 const themesEnum = themes.map(theme => theme.theme);
 
+const levelNames = ['low-', 'low', 'low+', 'mid-', 'mid', 'mid+', 'high-', 'high', 'high+', 'pro'];
+
 const languages = ['ru', 'en'];
 
 class UserState {
@@ -93,5 +95,6 @@ module.exports = {
   questionsCache,
   themes,
   themesEnum,
-  languages
+  languages,
+  levelNames
 };

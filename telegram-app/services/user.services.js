@@ -86,11 +86,17 @@ const sendUserCert = async (theme, bot) => {
   await bot.sendMessage(user.data._id, message);
 }
 
+const getUserAnswersHistory = (theme) => {
+  const { answers, settings } = user.data;
+  const lang = settings.language;
+};
+
 module.exports = {
   checkUserService,
   calculateUserExp,
   toggleUserSetting,
   setUserSetting,
   getUserAchievements,
-  sendUserCert
+  sendUserCert,
+  getUserAnswersHistory,
 };

@@ -1,6 +1,6 @@
 const { model, Schema } = require('mongoose');
 const { v4 } = require("uuid");
-const { languages } = require("../common/state");
+const { languages, themesEnum, levelNames } = require("../common/state");
 
 const userSchema = new Schema({
   _id: Number,
@@ -21,7 +21,7 @@ const userSchema = new Schema({
       },
       levelName: {
         type: String,
-        enum: ['low-', 'low', 'low+', 'mid-', 'mid', 'mid+', 'high-', 'high', 'high+', 'pro'],
+        enum: levelNames,
         default: 'low-'
       }
     },
@@ -32,7 +32,7 @@ const userSchema = new Schema({
       },
       levelName: {
         type: String,
-        enum: ['low-', 'low', 'low+', 'mid-', 'mid', 'mid+', 'high-', 'high', 'high+', 'pro'],
+        enum: levelNames,
         default: 'low-'
       }
     },
@@ -43,7 +43,7 @@ const userSchema = new Schema({
       },
       levelName: {
         type: String,
-        enum: ['low-', 'low', 'low+', 'mid-', 'mid', 'mid+', 'high-', 'high', 'high+', 'pro'],
+        enum: levelNames,
         default: 'low-'
       }
     },
@@ -54,7 +54,7 @@ const userSchema = new Schema({
       },
       levelName: {
         type: String,
-        enum: ['low-', 'low', 'low+', 'mid-', 'mid', 'mid+', 'high-', 'high', 'high+', 'pro'],
+        enum: levelNames,
         default: 'low-'
       }
     },
@@ -65,7 +65,7 @@ const userSchema = new Schema({
       },
       levelName: {
         type: String,
-        enum: ['low-', 'low', 'low+', 'mid-', 'mid', 'mid+', 'high-', 'high', 'high+', 'pro'],
+        enum: levelNames,
         default: 'low-'
       }
     },
@@ -76,7 +76,7 @@ const userSchema = new Schema({
       },
       levelName: {
         type: String,
-        enum: ['low-', 'low', 'low+', 'mid-', 'mid', 'mid+', 'high-', 'high', 'high+', 'pro'],
+        enum: levelNames,
         default: 'low-'
       }
     },
@@ -99,7 +99,7 @@ const userSchema = new Schema({
     },
     language: {
       type: String,
-      enum: ['ru', 'en'],
+      enum: languages,
       default: 'ru'
     }
   }
@@ -121,7 +121,11 @@ const UserAnswerSchema = new Schema({
   lang: {
     type: String,
     enum: languages,
-  }
+  },
+  theme: {
+    type: String,
+    enum: themesEnum,
+  },
 });
 
 const User = model('User', userSchema);

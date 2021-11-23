@@ -47,9 +47,31 @@ const getQuestions = async (lang, theme) => {
   return getQuestionModel(lang).findOne({ theme });
 };
 
-const getUserAnswers = async (chatId) => {
-  return UserAnswer.find({ userId: chatId, isCorrect: { $ne: 'pending' } });
+const getUserAnswers = async (chatId, theme) => {
+  return UserAnswer.find({ userId: chatId, isCorrect: { $ne: 'pending' }, theme });
 };
+
+const getAnsweredQuestions = async (chatId, theme) => {
+  const result = [];
+  const answers = await getUserAnswers(chatId, theme);
+  const [answersRu, answersEn] = answers.reduce((acc, item) => {
+    item.lang === 'ru' ? acc[0].push(item) : acc[1].push(item);
+    return acc;
+  }, [[], []]);
+  const answersRuQIds = answersRu.map(answer => answer.questionId);
+  const answersEnQIds = answersEn.map(answer => answer.questionId);
+  if (answersRu.length) {
+    const questions = await getQuestionModel('ru').findOne({ theme });
+    const filteredQuestions = questions.data.filter(question => question._id.includes(answersRuQIds));
+    result.push(...filteredQuestions);
+  }
+  if (answersEn.length) {
+    const questions = await getQuestionModel('en').findOne({ theme });
+    const filteredQuestions = questions.data.filter(question => question._id.includes(answersEnQIds));
+    result.push(...filteredQuestions);
+  }
+  return result;
+}
 
 const saveUserAnswer = async (data) => {
   return UserAnswer.create(data);
@@ -73,4 +95,5 @@ module.exports = {
   saveUserAnswer,
   getUserAnswerByPollId,
   updateUserAnswerByPollId,
+  getAnsweredQuestions,
 }
