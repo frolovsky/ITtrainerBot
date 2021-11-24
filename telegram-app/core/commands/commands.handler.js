@@ -7,10 +7,10 @@ const {
   donateKeyboard,
 } = require('../../keyboard');
 const commandListString = require('./commands.list');
-const { user } = require('./../../common/state');
+const { users } = require('./../../common/state');
 
 const router = async (bot, chatId, command) => {
-  const { settings } = user.data;
+  const { settings } = users.state[chatId];
   if (command === '/start') {
     return bot.sendMessage(chatId, `Привет! Я бот в котором ты можешь проверять свои знания и узнавать новое. Список команд бота: ${commandListString}`, {
       parse_mode: 'HTML',

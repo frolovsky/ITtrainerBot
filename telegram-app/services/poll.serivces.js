@@ -1,9 +1,9 @@
-const { user, questionsCache } = require("../common/state");
+const { questionsCache } = require("../common/state");
 const { getUserAnswers } = require("../database");
 const { clearPrototype } = require("../common/helpers")
 
-const getQuestion = async (questions, lang, theme) => {
-  const answers = await getUserAnswers(user.data._id, theme);
+const getQuestion = async (userId, questions, lang, theme) => {
+  const answers = await getUserAnswers(userId, theme);
   if (!answers) {
     questionsCache.checkAndPush(clearPrototype(questions.data[0]), { lang, theme });
     return questions.data[0];

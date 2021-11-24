@@ -1,3 +1,5 @@
+const { clearPrototype } = require('./helpers');
+
 const themes = [
   {
     theme: 'javascript',
@@ -32,17 +34,22 @@ const levelNames = ['low-', 'low', 'low+', 'mid-', 'mid', 'mid+', 'high-', 'high
 const languages = ['ru', 'en'];
 
 class UserState {
-  constructor(data) {
-    this.data = data;
-    this.botNextStep = null;
+  constructor() {
+    this.state = {};
   }
 
-  setData(data) {
-    this.data = data;
+  setData(id, data) {
+    if (!this.state[id]) {
+      this.state[id] = {};
+    }
+    this.state[id] = Object.assign(this.state[id], clearPrototype(data));
   }
 
-  setBotNextStep(nextStep) {
-    this.botNextStep = nextStep;
+  setNextStep(id, nextStep) {
+    if (!this.state[id]) {
+      this.state[id] = {};
+    }
+    this.state[id].nextStep = nextStep;
   }
 }
 
@@ -85,12 +92,12 @@ class UserAnswersCache extends CacheParent {
   }
 }
 
-const user = new UserState({});
+const users = new UserState();
 const questionsCache = new QuestionsCache();
 const userAnswersCache = new UserAnswersCache();
 
 module.exports = {
-  user,
+  users,
   userAnswersCache,
   questionsCache,
   themes,

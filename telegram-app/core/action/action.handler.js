@@ -11,12 +11,12 @@ const {
 const { getQuestions, saveUserAnswer, getAnsweredQuestions } = require('../../database');
 const { getQuestion } = require('../../services/poll.serivces');
 const { toggleUserSetting, setUserSetting, getUserAchievements, sendUserCert } = require('../../services/user.services');
-const { user, userAnswersCache } = require('./../../common/state');
+const { users, userAnswersCache, themes } = require('./../../common/state');
 const { getThemeText, clearPrototype } = require('./../../common/helpers');
 const { MIN_SCORE_FOR_DOWNLOAD_CERT } = require('./../../common/config');
 
 module.exports = async (bot, data, options) => {
-  const userData = user.data;
+  const userData = users.state[options.chatId];
   const { settings } = userData;
   switch(true) {
     case (/^tests$/).test(data):
@@ -44,7 +44,7 @@ module.exports = async (bot, data, options) => {
     case (/\D+-getpoll$/).test(data):
       const theme = String(data).split('-')[0];
       const questions = await getQuestions(options.lang, theme);
-      const question = await getQuestion(questions, options.lang, theme);
+      const question = await getQuestion(options.chatId, questions, options.lang, theme);
       if (question) {
         const { poll } = await bot.sendPoll(options.chatId, question.text, question.options, {
           type: 'quiz',
@@ -61,7 +61,7 @@ module.exports = async (bot, data, options) => {
         });
         userAnswersCache.checkAndPush(clearPrototype(userAnswer));
       } else {
-        await bot.sendMessage(options.chatId, `Вы прошли все доступные тесты по ${getThemeText(theme)}.`, {
+        await bot.sendMessage(options.chatId, `Вы прошли все доступные тесты по ${getThemeText(theme, themes)}.`, {
           parse_mode: 'HTML',
           reply_markup: startKeyboard
         });

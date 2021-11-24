@@ -1,19 +1,19 @@
 const { getUser } = require("../database");
 const { updateUserLastActivity, updateUser } = require("../database");
-const { user } = require("../common/state");
+const { users, themes} = require("../common/state");
 const { settingsKeyboard } = require("../keyboard");
 const { getThemeText, clearPrototype } = require("../common/helpers");
 const { MIN_SCORE_FOR_DOWNLOAD_CERT } = require('./../common/config');
 
 const checkUserService = async (chatId, firstName, username) => {
-  const data = Object.keys(user.data).length
+  const data = (users.state[chatId] && Object.keys(users.state[chatId]).length)
     ? await updateUserLastActivity({ chatId })
     : await getUser({ chatId, firstName, username });
-  user.setData(data);
+  users.setData(chatId, data);
 };
 
-const calculateUserExp = (isCorrect, { reward, theme }) => {
-  let exp = user.data.levels[theme].totalExp;
+const calculateUserExp = (isCorrect, userId, { reward, theme }) => {
+  let exp = users.state[userId].levels[theme].totalExp;
   return isCorrect ? exp + reward : exp;
 };
 
@@ -26,6 +26,7 @@ const toggleUserSetting = async (userData, prop, value, bot, messageId) => {
         message_id: messageId,
         chat_id: userData._id
       });
+      users.setData(userData._id, updatedUser);
       break;
     }
     case 'arcadeMode': {
@@ -34,6 +35,7 @@ const toggleUserSetting = async (userData, prop, value, bot, messageId) => {
         message_id: messageId,
         chat_id: userData._id
       });
+      users.setData(userData._id, updatedUser);
       break;
     }
     default:
@@ -43,12 +45,12 @@ const toggleUserSetting = async (userData, prop, value, bot, messageId) => {
 };
 
 const setUserSetting = async (userData, prop, bot) => {
-  const { value } = user.botNextStep || {};
+  const { value } = userData.nextStep || {};
   switch (prop) {
     case 'complexity': {
       if (!value) {
         await bot.sendMessage(userData._id, 'Укажите сложность присылаемых вопросов по шкале от 1 до 10. Где 1 - легкие вопросы, а 10 - сложные. \n*Используется в режиме "Тесты".');
-        user.setBotNextStep({
+        users.setNextStep(userData._id, {
           action: 'set-settings-complexity',
           value: null,
         });
@@ -58,7 +60,7 @@ const setUserSetting = async (userData, prop, bot) => {
           parse_mode: 'HTML',
           reply_markup: settingsKeyboard(updatedUser.settings)
         });
-        user.setBotNextStep(null);
+        users.setData(userData._id, { ...updatedUser, nextStep: null });
       }
       break;
     }
@@ -72,7 +74,7 @@ const getUserAchievements = () => {
   const { levels } = user.data;
   return Object.keys(clearPrototype(levels)).map(theme => {
     const { totalExp, levelName } = levels[theme];
-    const themeName = getThemeText(theme);
+    const themeName = getThemeText(theme, themes);
     return `${ totalExp >= MIN_SCORE_FOR_DOWNLOAD_CERT ? '✅ ' : '👀 ' }<b>${themeName}</b>\n Набрано очков (exp): ${totalExp}\n Ваш уровень: ${levelName}\n`;
   }).join('\n');
 }
@@ -80,8 +82,8 @@ const getUserAchievements = () => {
 const sendUserCert = async (theme, bot) => {
   const { totalExp } = user.data.levels[theme];
   const message = totalExp >= MIN_SCORE_FOR_DOWNLOAD_CERT
-    ? `✅ Ваш сертификат по ${getThemeText(theme)} формируется и будет готов в течение 30 минут и будет выслан вам в личном сообщении.`
-    : `❌ Не хватает очков для получения сертификата по ${getThemeText(theme)}: ${totalExp}/${MIN_SCORE_FOR_DOWNLOAD_CERT - totalExp}`;
+    ? `✅ Ваш сертификат по ${getThemeText(theme, themes)} формируется и будет готов в течение 30 минут и будет выслан вам в личном сообщении.`
+    : `❌ Не хватает очков для получения сертификата по ${getThemeText(theme, themes)}: ${totalExp}/${MIN_SCORE_FOR_DOWNLOAD_CERT - totalExp}`;
 
   await bot.sendMessage(user.data._id, message);
 }
