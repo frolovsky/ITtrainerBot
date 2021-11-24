@@ -1,4 +1,4 @@
-const boilerplateRepo = require('./boilerplate.repository');
+const repository = require('./boilerplate.repository');
 
 // business logic and call repositories functions
 
