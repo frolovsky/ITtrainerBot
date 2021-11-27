@@ -107,7 +107,7 @@ export default class AddQuestion extends Vue {
     QuestionThemes.CSS,
     QuestionThemes.VUE,
     QuestionThemes.REACT,
-    QuestionThemes.REACT,
+    QuestionThemes.PYTHON,
   ];
   lang = QuestionLang.RUSSIAN;
   langList = [QuestionLang.RUSSIAN, QuestionLang.ENGLISH];

@@ -1,7 +1,7 @@
 <template>
   <div class="questions-list">
     <question-item
-      v-for="question in questions"
+      v-for="question in filteredQuestion"
       :key="question._id"
       :item="question"
     />
@@ -9,10 +9,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import { Action, State } from "vuex-class";
 import { QuestionsState } from "@/store/questions/types";
-import { QuestionItemData } from "@/types/questions";
+import { QuestionItemData, QuestionsFilters } from "@/types/questions";
 
 const QuestionItem = () =>
   import(
@@ -26,12 +26,21 @@ const QuestionItem = () =>
   },
 })
 export default class QuestionsList extends Vue {
+  @Prop({ type: Object, default: () => ({}) }) filters!: QuestionsFilters;
   @State("questions") questionsState!: QuestionsState;
   @Action("fetchQuestions", { namespace: "questions" })
   fetchQuestions!: () => Promise<void>;
 
   get questions(): QuestionItemData[] {
     return this.questionsState.questions;
+  }
+
+  get filteredQuestion(): QuestionItemData[] {
+    if (this.filters && Object.keys(this.filters).length) {
+      const { lang, category } = this.filters;
+      return this.questions.filter(q => (q.lang === lang && q.theme === category));
+    }
+    return this.questions;
   }
 
   async created(): Promise<void> {

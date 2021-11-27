@@ -7,7 +7,7 @@ export interface QuestionItemData {
   correctOption: number;
   reward: number;
   materials: string;
-  image?: string;
+  image?: Array<string>;
 }
 
 export enum QuestionThemes {
@@ -22,4 +22,9 @@ export enum QuestionThemes {
 export enum QuestionLang {
   RUSSIAN = "ru",
   ENGLISH = "en",
+}
+
+export interface QuestionsFilters {
+  lang: string;
+  category: string;
 }

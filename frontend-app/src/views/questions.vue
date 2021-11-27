@@ -1,25 +1,37 @@
 <template>
   <div class="questions">
     <h1 class="questions-title">Список вопросов</h1>
-    <question-list />
+    <questions-filter @applyFilters="filters = $event" />
+    <questions-list :filters="filters" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { QuestionsFilters } from '@/types/questions';
 
-const QuestionList = () =>
+const QuestionsList = () =>
   import(
-    /* webpackChunkName: "question-list" */ "@/components/questions/questions-list.vue"
+    /* webpackChunkName: "questions-list" */ "@/components/questions/questions-list.vue"
   );
+const QuestionsFilter = () =>
+    import(
+        /* webpackChunkName: "questions-filter" */ "@/components/questions/questions-filter.vue"
+        );
 
 @Component({
   name: "Questions",
   components: {
-    QuestionList,
+    QuestionsList,
+    QuestionsFilter,
   },
 })
-export default class Questions extends Vue {}
+export default class Questions extends Vue {
+  filters: QuestionsFilters = {
+    category: '',
+    lang: ''
+  };
+}
 </script>
 
 <style lang="scss" scoped>
