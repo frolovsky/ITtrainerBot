@@ -29,6 +29,9 @@
         ID: <span class="item-id__text">{{ item._id }}</span>
       </p>
     </div>
+    <div>
+      <ui-button>Редактировать</ui-button>
+    </div>
   </div>
 </template>
 
@@ -36,8 +39,13 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { QuestionItemData } from "@/types/questions";
 
+const UiButton = () => import(/*webpackChunkName: 'ui-button'*/'@/common/ui/ui-button/ui-button.vue');
+
 @Component({
   name: "QuestionItem",
+  components: {
+    UiButton,
+  }
 })
 export default class QuestionItem extends Vue {
   @Prop({ type: Object, default: () => ({}) }) item!: QuestionItemData;

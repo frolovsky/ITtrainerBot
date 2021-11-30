@@ -77,6 +77,12 @@
           <textarea v-model="materials"></textarea>
         </label>
       </div>
+      <div class="form-block">
+        <label class="form-label">
+          <span class="form-label__text">Изображения: </span>
+          <input type="file" multiple @change="onChangeFileInput" />
+        </label>
+      </div>
       <button class="form-submit" @click.prevent="onSubmit">Отправить</button>
     </form>
   </div>
@@ -114,6 +120,8 @@ export default class AddQuestion extends Vue {
   correct = 0;
   reward = 0;
   materials = "";
+  files: File[] = [];
+  errors: string[] = [];
 
   onInputOption(e: InputEvent, i: number): void {
     const value = (e.target as HTMLInputElement).value;
@@ -124,17 +132,47 @@ export default class AddQuestion extends Vue {
     this.options.splice(i, 1);
   }
 
+  onChangeFileInput(e: InputEvent) {
+    const files = (e.target as HTMLInputElement).files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        this.files.push(files[i]);
+      }
+    }
+  }
+
   async onSubmit(): Promise<void> {
-    await this.addQuestion({
-      text: this.text,
-      materials: this.materials,
-      options: this.options,
-      reward: this.reward,
-      correctOption: this.correct,
-      theme: this.category,
-      lang: this.lang,
-    });
-    this.resetData();
+    this.checkForm();
+    if (this.errors.length === 0) {
+      await this.addQuestion({
+        text: this.text,
+        materials: this.materials,
+        options: this.options,
+        reward: this.reward,
+        correctOption: this.correct,
+        theme: this.category,
+        lang: this.lang,
+      });
+      this.resetData();
+    } else {
+      alert(this.errors[0]);
+    }
+  }
+
+  checkForm(): void {
+    this.errors = [];
+    if (!this.text) {
+      this.errors.push('Не заполнен текст вопроса');
+    } else if (!this.materials) {
+      this.errors.push('Не указаны материалы к вопросу');
+    } else if (this.options.length < 2) {
+      this.errors.push('Укажите минимум 2 варианта ответа');
+    }
+    this.options.forEach((option, i) => {
+      if (!option) {
+        this.errors.push(`Пустой вариант ответа под номером ${i + 1}`);
+      }
+    })
   }
 
   resetData(): void {
@@ -143,6 +181,7 @@ export default class AddQuestion extends Vue {
     this.correct = 0;
     this.reward = 0;
     this.materials = "";
+    this.files = [];
   }
 }
 </script>
