@@ -17,6 +17,14 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "questions" */ "../views/questions.vue"),
   },
   {
+    path: "/questions/:id",
+    name: "edit-question",
+    component: () =>
+      import(
+        /* webpackChunkName: "edit-question" */ "../components/questions/question-form/question-form.vue"
+      ),
+  },
+  {
     path: "/questions/add",
     name: "add-question",
     component: () =>

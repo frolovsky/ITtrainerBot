@@ -38,7 +38,9 @@ export default class QuestionsList extends Vue {
   get filteredQuestion(): QuestionItemData[] {
     if (this.filters && Object.keys(this.filters).length) {
       const { lang, category } = this.filters;
-      return this.questions.filter(q => (q.lang === lang && q.theme === category));
+      return this.questions.filter(
+        (q) => q.lang === lang && q.theme === category
+      );
     }
     return this.questions;
   }

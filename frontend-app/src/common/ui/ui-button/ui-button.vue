@@ -1,35 +1,36 @@
 <template>
   <button
-      class="ui-button"
-      :class="{ [getClassByVariant(variant)]: true }"
-      :type="type"
-      :disabled="disabled"
-      :style="buttonStyle"
+    class="ui-button"
+    :class="{ [getClassByVariant(variant)]: true }"
+    :type="type"
+    :disabled="disabled"
+    :style="buttonStyle"
   >
     <slot></slot>
   </button>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { ButtonVariants, ButtonTypes } from './ui-button.types';
+import { Component, Vue, Prop } from "vue-property-decorator";
+import { ButtonVariants, ButtonTypes } from "./ui-button.types";
 
 @Component({
-  name: 'UiButton',
+  name: "UiButton",
 })
 export default class UiButton extends Vue {
-  @Prop({ type: String, default: ButtonVariants.BLUE }) variant!: ButtonVariants;
+  @Prop({ type: String, default: ButtonVariants.BLUE })
+  variant!: ButtonVariants;
   @Prop({ type: String, default: ButtonTypes.SUBMIT }) type!: ButtonTypes;
   @Prop({ type: Boolean, default: false }) disabled!: boolean;
-  @Prop({ type: String, default: '0 20px' }) padding!: string;
-  @Prop({ type: String, default: '0' }) margin!: string;
+  @Prop({ type: String, default: "0 20px" }) padding!: string;
+  @Prop({ type: String, default: "0" }) margin!: string;
   @Prop({ type: Number, default: 0 }) letterSpacing!: string;
   @Prop({ type: Number, default: 56 }) height!: number;
   @Prop({ type: Number, default: 6 }) borderRadius!: number;
   @Prop({ type: Number, default: 16 }) fontSize!: number;
-  @Prop({ type: String, default: '189px' }) minWidth!: string;
+  @Prop({ type: String, default: "189px" }) minWidth!: string;
 
-  get buttonStyle() {
+  get buttonStyle(): { [key: string]: string } {
     return {
       height: `${this.height}px`,
       padding: `${this.padding}`,
@@ -70,16 +71,16 @@ export default class UiButton extends Vue {
 
     &:hover,
     &:focus {
-      background: #109CF1;
+      background: #109cf1;
     }
 
     &:active {
-      background: #39ADF3;
+      background: #39adf3;
     }
 
     &:disabled {
-      background: #B5C1D2;
-      color: #7991B4;
+      background: #b5c1d2;
+      color: #7991b4;
       cursor: default;
     }
   }

@@ -29,9 +29,9 @@
         ID: <span class="item-id__text">{{ item._id }}</span>
       </p>
     </div>
-    <div>
+    <router-link :to="{ name: 'edit-question', params: { id: item._id } }">
       <ui-button>Редактировать</ui-button>
-    </div>
+    </router-link>
   </div>
 </template>
 
@@ -39,13 +39,16 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { QuestionItemData } from "@/types/questions";
 
-const UiButton = () => import(/*webpackChunkName: 'ui-button'*/'@/common/ui/ui-button/ui-button.vue');
+const UiButton = () =>
+  import(
+    /*webpackChunkName: 'ui-button'*/ "@/common/ui/ui-button/ui-button.vue"
+  );
 
 @Component({
   name: "QuestionItem",
   components: {
     UiButton,
-  }
+  },
 })
 export default class QuestionItem extends Vue {
   @Prop({ type: Object, default: () => ({}) }) item!: QuestionItemData;

@@ -8,16 +8,16 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { QuestionsFilters } from '@/types/questions';
+import { QuestionsFilters } from "@/types/questions";
 
 const QuestionsList = () =>
   import(
     /* webpackChunkName: "questions-list" */ "@/components/questions/questions-list.vue"
   );
 const QuestionsFilter = () =>
-    import(
-        /* webpackChunkName: "questions-filter" */ "@/components/questions/questions-filter.vue"
-        );
+  import(
+    /* webpackChunkName: "questions-filter" */ "@/components/questions/questions-filter.vue"
+  );
 
 @Component({
   name: "Questions",
@@ -28,8 +28,8 @@ const QuestionsFilter = () =>
 })
 export default class Questions extends Vue {
   filters: QuestionsFilters = {
-    category: '',
-    lang: ''
+    category: "",
+    lang: "",
   };
 }
 </script>

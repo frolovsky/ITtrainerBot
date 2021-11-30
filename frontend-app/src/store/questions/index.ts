@@ -2,6 +2,7 @@ import { Module } from "vuex";
 import { QuestionsState } from "@/store/questions/types";
 import { actions } from "./actions";
 import { mutations } from "./mutations";
+import { getters } from "./getters";
 import { RootState } from "@/types";
 
 const state: QuestionsState = {
@@ -15,6 +16,7 @@ const questions: Module<QuestionsState, RootState> = {
   state,
   actions,
   mutations,
+  getters,
 };
 
 export default questions;

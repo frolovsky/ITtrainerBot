@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { QuestionLang, QuestionThemes } from '@/types/questions';
+import { QuestionLang, QuestionThemes } from "@/types/questions";
 
 @Component({
   name: "QuestionsFilter",
@@ -43,18 +43,18 @@ export default class QuestionsFilter extends Vue {
     QuestionThemes.PYTHON,
   ];
 
-  @Watch('lang', { immediate: true })
-  onLangChange() {
+  @Watch("lang", { immediate: true })
+  onLangChange(): void {
     this.applyFilters();
   }
 
-  @Watch('category')
-  onCategoryChange() {
+  @Watch("category")
+  onCategoryChange(): void {
     this.applyFilters();
   }
 
-  applyFilters() {
-    this.$emit('applyFilters', { lang: this.lang, category: this.category });
+  applyFilters(): void {
+    this.$emit("applyFilters", { lang: this.lang, category: this.category });
   }
 }
 </script>
