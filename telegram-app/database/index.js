@@ -16,11 +16,10 @@ const {
 const init = () => {
   mongoose.connect(MONGO_CONNECTION_STRING, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true
+    useUnifiedTopology: true
   }, err => {
     if (err) {
+      console.log(err)
       throw new Error('Mongo connection failed')
     }
     console.log('Mongo success connected')

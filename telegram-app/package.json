@@ -18,8 +18,8 @@
   "homepage": "https://github.com/frolovsky/ITtrainerBot#readme",
   "dependencies": {
     "dotenv": "8.2.0",
-    "mongoose": "^5.10.13",
-    "node-telegram-bot-api": "^0.50.0",
+    "mongoose": "^6.3.2",
+    "node-telegram-bot-api": "^0.57.0",
     "nodemon": "^2.0.6",
     "uuid": "^3.4.0"
   }
